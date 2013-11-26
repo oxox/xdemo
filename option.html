@@ -1,0 +1,445 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>XDEMO</title>
+
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/github.css" media="screen" />
+</head>
+<body>
+
+
+	<div class="ui_s">
+		<div class="ui_logo">
+			<h1><img src="img/logo.png" alt=""></h1>
+		</div>
+
+		<div  class="ui_menu" id="js_ui_menu">
+			<div class="ui_menu_item" >
+				<h2 class="ui_menu_tit">易迅组件</h2>
+				<ol class="ui_menu_con" >
+					<li>
+						<a  href="#newXdemo"  >新建DEMO</a>			
+					</li>
+					<li>
+						<a  href="#xdemoPlatform" >DEMO平台</a>			
+					</li>
+					<li  class="active">
+						<a  href="#myXdemo"  >我的DEMO</a>			
+					</li>
+				</ol>
+			</div>
+			<div class="ui_menu_item">
+				<h2 class="ui_menu_tit">研发规范</h2>
+				<ol class="ui_menu_con">
+					<li>
+						<a  href="#about" >关于</a>			
+					</li>	
+				</ol>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="ui_m">
+
+		<div class="ui_m_item" id="newXdemo">
+			<h3 class="ui_h3 no_bob" >新建DEMO</h3>
+			<div class="ui_con">
+
+				<ul class="nav nav-tabs" id="myTab">
+				  <li class="active"><a href="#manualLoadWrap" data-toggle="tab">手动添加</a></li>
+				  <li ><a href="#autoLoadWrap" data-toggle="tab">自动读取</a></li>
+				</ul>
+
+				<div class="tab-content">
+				  <div class=" tab-pane fade in active" id="manualLoadWrap">
+
+						<form class="manual_create form-horizontal" role="form">
+						  <div class="form-group">
+						    <label for="inputEmail3" class="col-sm-2 control-label">DEMO名称</label>
+						    <div class="col-sm-10">
+						      <select class="form-control group_select" id="createDemoGroup">
+						      	<option value="0">请选择DEMO的业务所属</option>
+						      </select>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="inputEmail3" class="col-sm-2 control-label">DEMO名称</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" id="inputNewXdemoName" placeholder="请输入DEMO名称">
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="inputEmail3" class="col-sm-2 control-label">DEMO英文ID</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" id="inputNewXdemoEname" placeholder="请输入DEMO的英文ID">
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="inputEmail3" class="col-sm-2 control-label">作用域</label>
+						    <div class="col-sm-10">
+						    	<textarea id="inputNewXdemoMatches" class="form-control" placeholder="请输入作用网址，如http://*.51buy.com/*，如果是单域名，请用斜杆结尾。多域名则每行一个"></textarea>
+
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="inputEmail3" class="col-sm-2 control-label">注入的JS文件</label>
+						    <div class="col-sm-10">
+						    	<textarea id="inputNewXdemoJs" class="form-control" placeholder="请输入要注入的JS文件地址，一行一条"></textarea>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="inputEmail3" class="col-sm-2 control-label">注入的CSS文件</label>
+						    <div class="col-sm-10">
+						    	<textarea id="inputNewXdemoCss" class="form-control" placeholder="请输入要注入的CSS文件地址，一行一条"></textarea>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <div class="col-sm-offset-2 col-sm-10">
+						      <button id="newXdemoSumbit" type="submit" class="btn  btn-info">确定</button>
+						    </div>
+						  </div>
+						</form>
+
+				  </div>
+				  <div class="tab-pane fade" id="autoLoadWrap">
+				  	<div class="auto_load_group_selector">
+				  	<select class="form-control group_select" id="autoLoadDemoGroup">
+						      	<option value="0">请选择DEMO的业务所属</option>
+						</select>
+						</div>
+				    <div class="input-group auto_load_input">
+				      <input type="text" class="form-control" id="optionFileUrl" placeholder="请填入配置文件URL">
+				      <span class="input-group-btn">
+				        <button id="toLoadOption" class="btn btn-info" type="button">读取</button>
+				      </span>
+				    </div>
+				    <a id="showOptionFormat" href="#" title="查看配置文件格式示例">查看配置文件格式示例</a>
+						<table id="autoLoadResultTable" style="display:none;" class="table table-bordered auto_load_table">
+							<tbody><tr>
+								<th>名称</th>
+								<td id="demoName"></td>
+							</tr>
+							<tr>
+								<th>业务</th>
+								<td id="demoGroup"></td>
+							</tr>
+							<tr>
+								<th>英文ID</th>
+								<td id="demoEname"></td>
+							</tr>
+							<tr>
+								<th>描述</th>
+								<td id="demoDes"></td>
+							</tr>
+
+							<tr>
+								<th>版本</th>
+								<td id="demoVer"></td>
+							</tr>
+							<tr>
+								<th>作者</th>
+								<td id="demoAuthor"></td>
+							</tr>
+							<tr>
+								<th>作用范围</th>
+								<td id="demoMatch"></td>
+							</tr>
+							<tr>
+								<th>注入的JS文件</th>
+								<td id="demoJs"></td>
+							</tr>
+							<tr>
+								<th>注入的CSS文件</th>
+								<td id="demoCss"></td>
+							</tr>    	
+
+						</tbody></table>				    
+				  </div>
+
+				</div>
+
+
+			</div>
+		</div>
+
+
+
+		<!-- S 我的DEMO -->
+		<div class="ui_m_item active" id="myXdemo">
+			<h3 class="ui_h3" >我的DEMO</h3>
+			<div class="ui_con">
+				<select class="form-control group_select" id="myDemoGroup">
+					<option value="0">请选择DEMO的业务所属</option>
+				</select>
+				<a href="#" data-action="setCommonGroup" title="将当前分类设置为默认分类">将当前分类设置为默认分类</a>
+
+				<table class="table table-striped xdemo_platform_table">
+				  <thead>
+				  	<tr>
+				  		<th>名称</th>
+				  		<th>所属</th>
+				  		<th>状态</th>
+				  		<th>版本</th>
+				  		<th>作者</th>
+				  		<th>描述</th>
+				  		<th>操作</th>
+				  	</tr>
+				  </thead>
+				  <tbody id="myXdemoList">
+						<tr>
+						<td style="text-align:center;" colspan="6">您还没有DEMO，请切换至<code>DEMO平台</code>页卡获取DEMO，或者到<code>关于XDEMO</code>页卡查看帮助</td>
+						</tr>
+			
+				  </tbody>
+				</table>
+
+
+			</div>
+		</div>
+		<!-- E 我的DEMO -->
+
+
+		<!-- S XDEMO平台 -->
+		<div class="ui_m_item" id="xdemoPlatform">
+			<h3 class="ui_h3" >DEMO平台</h3>
+			<div class="ui_con">
+				<select class="form-control group_select" id="demoListGroup">
+					<option value="0">请选择DEMO的业务所属</option>
+				</select>
+				<a href="#" title="将当前分类设置为默认分类"  data-action="setCommonGroup" >将当前分类设置为默认分类</a>
+
+				<table class="table table-striped xdemo_platform_table">
+				  <thead>
+				  	<tr>
+				  		<th>DEMO名称</th>
+				  		<th>所属</th>
+				  		<th>DEMO描述</th>
+				  		<th>DEMO作者</th>
+				  		<th>操作</th>
+				  	</tr>
+				  </thead>
+				  <tbody id="xDemoPlatformList">
+
+						<tr><td>易迅快捷搜索框</td><td>易迅任意位置，按shift+?调出搜索框，<a href="http://www.51buy.com" target="_blank">点击这里体验</a></td><td>reeqiwu</td><td><a data-url="http://xdemo.reeqi.me/upload/icson_search.js" href="#" class="btn  btn-default" title="获取">获取</a></td></tr>						
+				  </tbody>
+				</table>
+
+
+			</div>
+		</div>
+		<!-- E XDEMO平台 -->
+
+		<!-- S 关于 -->
+		<div class="ui_m_item" id="about">
+			<h3 class="ui_h3" >About</h3>
+			<div class="ui_con">
+				<p class="con_txt">XDEMO（音译：“插DEMO”），用于向指定的页面注入远程脚本及样式，以达到改变页面元素，增强用户体验的效果。</p>
+				<p  class="con_txt">开发XDEMO的初衷是为了方便将自己的想法落地到实际项目的页面上，方便其他角色体验。如果你有同样的需求，欢迎使用。</p>
+				<h4 class="con_tit">使用：</h4>
+				<p  class="con_txt">1.点击左侧 新建DEMO 页卡，可手动按表单提示添加DEMO</p>
+				<p  class="con_txt">2.如果选择读取配置文件的方式添加DEMO，请按以下格式创建.JS文件放至远程服务器，再将此文件URL填入 自动读取框中。 <em>（注释需全部删除）</em></p>
+				<pre class="code_area"><code data-language="javascript">
+{
+    //DEMO名称
+    "name": "oxox用于测试的oxox",
+
+    //DEMO的英文ID
+    "ename" : "ceshi", 
+
+    //DEMO的作者
+    "author" : "reeqiwu", 
+
+    //DEMO版本号，如配置文件有更新，务必修改版本号。
+    "version": "3.5",
+
+    //DEMO的描述，可以填写用法或链接。
+    "descrition" : "这是描述这是描述这是描述",
+
+    //DEMO嵌入目标页面的CSS,如果没有,则为“[]”
+    "css": ["http://127.0.0.1/a.css","http://127.0.0.1/b.css"], 
+
+    //DEMO嵌入目标页面的CSS,如果没有,则为“[]”
+    "js": ["http://127.0.0.1/c.js","http://127.0.0.1/d.js"], 
+
+    //DEMO的作用域，支持多域名，域名请用斜杆结尾。
+    "matches": ["http://*.51buy.com/*","http://127.0.0.1/","http://localhost/"]
+}   
+				</code></pre>
+				<p  class="con_txt">3.左侧菜单 我的DEMO 中可以查看、更新、编辑、删除、启用、停用DEMO，也可以将DEMO<em>提交至平台</em></p>
+				<p  class="con_txt">4.左侧菜单 DEMO平台 中可以获取其他提交的DEMO</p>
+				<p  class="con_txt">5.在使用过程中如有问题或有任何建议，欢迎联系 reeqiwu 。^_^ </p>
+			</div>
+		</div>
+		<!-- E 关于 -->
+
+
+	</div>
+
+
+
+<div id="myModal" class="xdemo_edit_layer modal  fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body ">
+				<form class="manual_create form-horizontal" role="form">
+				  <div class="form-group">
+				    <label for="inputXdemoName" class="col-sm-3 control-label">DEMO名称</label>
+				    <div class="col-sm-9">
+				      <input type="text" class="form-control" id="inputXdemoName" placeholder="请输入DEMO名称">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputXdemoEname" class="col-sm-3 control-label">DEMO英文ID</label>
+				    <div class="col-sm-9">
+				      <input type="text" class="form-control" id="inputXdemoEname" placeholder="请输入DEMO的英文ID">
+				    </div>
+				  </div>				  
+				  <div class="form-group">
+				    <label for="inputXdemoVer" class="col-sm-3 control-label">DEMO版本</label>
+				    <div class="col-sm-9">
+				      <input type="text" class="form-control" id="inputXdemoVer" placeholder="请输入DEMO的版本">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputXdemoDes" class="col-sm-3 control-label">描述</label>
+				    <div class="col-sm-9">
+				    	<textarea id="inputXdemoDes" class="form-control" placeholder="请输入此DEMO的描述"></textarea>
+
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputXdemoMatches" class="col-sm-3 control-label">作用域</label>
+				    <div class="col-sm-9">
+				    	<textarea id="inputXdemoMatches" class="form-control" placeholder="请输入作用网址，如http://*.51buy.com/*，如果是单域名，请用斜杆结尾。多域名则每行一个"></textarea>
+
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputXdemoJs" class="col-sm-3 control-label">注入的JS文件</label>
+				    <div class="col-sm-9">
+				    	<textarea id="inputXdemoJs" class="form-control" placeholder="请输入要注入的JS文件地址，一行一条"></textarea>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputXdemoCss" class="col-sm-3 control-label">注入的CSS文件</label>
+				    <div class="col-sm-9">
+				    	<textarea id="inputXdemoCss" class="form-control" placeholder="请输入要注入的CSS文件地址，一行一条"></textarea>
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputXdemoOptionFile" class="col-sm-3 control-label">配置文件路径</label>
+				    <div class="col-sm-9">
+				    	<input class="form-control" type="text" id="inputXdemoOptionFile" placeholder="请输入配置文件路径，必须是">
+				    </div>
+				  </div>
+
+				</form>
+      </div>
+      <div class="modal-footer">
+  			<input type="hidden" id="xDemoIndex"/>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="editXdemoDone" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+<script type="text/html" id="myDemoTableTemplate">
+{{#items}}
+{{#row}}
+<tr data-xdemo-index="{{xDemoIndex}}" data-group="{{xdemoGroup}}">
+{{/row}}
+	<td class="col1">{{xdemoName}}</td>
+	<td>{{xdemoGroup}}</td>
+	<td data-xdemo-status><span class="label {{xdemoNowStatus1}}">{{xdemoNowStatus2}}</span></td>
+	<td>{{xdemoVer}}</td>
+	<td>{{xdemoAuthor}}</td>
+	<td>{{xdemoDes}}</td>
+	<td>
+		<div class="btn-group">
+		  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+		    操作 <span class="caret"></span>
+		  </button>
+			<ul class="dropdown-menu">
+				<li>
+					<a data-update-index="{{xDemoIndex}}" href="#">更新</a>
+				</li>
+				<li>
+					<a data-edit-index="{{xDemoIndex}}" href="#myModal" data-toggle="modal">编辑</a>
+				</li>
+				<li>
+					<a data-switch-index="{{xDemoIndex}}" href="#">{{xDemoStatus}}</a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					<a href="#uploadModal" data-toggle="modal" data-upload-index="{{xDemoIndex}}" href="#">提交至平台</a>
+				</li>
+				<li>
+					<a data-delete-index="{{xDemoIndex}}" href="#">删除</a>
+				</li>
+			</ul>
+		</div>
+	</td>
+{{#row}}	
+</tr>
+{{/row}}
+{{/items}}
+
+</script>
+
+
+<script type="text/html" id="demoPlatformTemplate">
+{{#items}}
+<tr data-group="{{xDemoGroup}}">
+	<td class="col1">{{xDemoName}}</td>
+	<td>{{xDemoGroup}}</td>
+	<td class="col_des">{{xDemoDes}}</td>
+	<td>{{xDemoAuthor}}</td>
+	<td>
+		<a data-url="{{xDemoUrl}}" href="#" class="btn btn-default" title="获取">获取</a>
+	</td>
+</tr>
+{{/items}}
+</script>
+
+<script type="text/html" id="groupItemTemplate">
+{{#items}}
+<option value="{{groupItem}}">{{groupItem}}</option>
+{{/items}}
+</script>
+
+<script src="js/jquery.min.js" type="text/javascript" charset="utf-8" ></script>
+<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/mustache.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/rainbow-min.js"></script>
+    <script src="js/generic.js"></script>
+    <script src="js/javascript.js"></script>
+
+<script src="js/option.js" type="text/javascript" charset="utf-8"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
