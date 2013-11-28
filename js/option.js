@@ -1,29 +1,7 @@
-chrome.extension.onMessage.addListener(function (request) {
-	console.log('test');
-		if(request.type == 'userName'){
-			localStorage.setItem("local_author",request.userName);
-		}
-})
-function html_decode(str)   
-{   
-  var s = "";   
-  if (str.length == 0) return "";   
-  s = str.replace(/&gt;/g, ">");   
-  s = s.replace(/&lt;/g, "<");   
-  //s = s.replace(/&gt;/g, ">");   
-  s = s.replace(/&nbsp;/g, " ");
-  s = s.replace(/&#x2F;/g,"/");  
-  s = s.replace(/&amp;/g,"&");  
-  s = s.replace(/&#39;/g, "\'");   
-  s = s.replace(/&quot;/g, "\"");   
-  s = s.replace(/<br>/g, "\n");   
-  return s;   
-};
+
 
 
 var xdemoOption = {
-
-
 
 	// 手动新建DEMO
 	manualCreateXdemoEvent : function(){
@@ -622,7 +600,6 @@ var xdemoOption = {
 			getXdemoItem.xDemoVersion = $('#inputXdemoVer').val();
 			getXdemoItem.xDemoDes = $('#inputXdemoDes').val();
 			getXdemoItem.xDemoEname = $('#inputXdemoEname').val();
-			//getXdemoItem.xDemoAuthor = $('#inputXdemoAuthor').val();
 			getXdemoItem.xDemoManifestFile = $('#inputXdemoOptionFile').val();
 			getXdemoItem.xDemoMatches = $('#inputXdemoMatches').val().split('\n');
 			var xDemoCssObj = $('#inputXdemoCss').val().split('\n');
@@ -655,9 +632,6 @@ var xdemoOption = {
 			xDemoStatusTd.html('<span class="label label-success">On</span>');
 		}
 		localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
-	
-
-
 	},
 
 	//删除我的DEMO
@@ -897,10 +871,6 @@ var xdemoOption = {
 		}
 	},
 	init : function () {
-		// setTimeout(function(){
-		// 	$('.ui_s').addClass('ui_s_unfold');
-		// },50)
-	
 		this.navTab();
 		this.manualCreateXdemoEvent();
 		this.autoLoadXdemoEvent();
@@ -917,15 +887,30 @@ var xdemoOption = {
 /**
  * URL解析
  */
-function UrlRegEx(urlt)   {      
-    //如果加上/g参数，那么只返回$0匹配。也就是说arr.length = 0   
+function UrlRegEx(urlt)   {        
     var re = /(\w+):\/\/([^\:|\/]+)(\:\d*)?(.*\/)([^#|\?|\n]+)?(#.*)?(\?.*)?/gi;   
-   	var arr = re.exec(urlt);   
-    //var arr = urlt.match(re);   
+   	var arr = re.exec(urlt);    
     return arr;   
    
 }
 
+
+/**
+ * html反编译
+ */
+function html_decode(str) {   
+  var s = "";   
+  if (str.length == 0) return "";   
+  s = str.replace(/&gt;/g, ">");   
+  s = s.replace(/&lt;/g, "<");    
+  s = s.replace(/&nbsp;/g, " ");
+  s = s.replace(/&#x2F;/g,"/");  
+  s = s.replace(/&amp;/g,"&");  
+  s = s.replace(/&#39;/g, "\'");   
+  s = s.replace(/&quot;/g, "\"");   
+  s = s.replace(/<br>/g, "\n");   
+  return s;   
+};
 
 
 xdemoOption.init();

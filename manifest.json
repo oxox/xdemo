@@ -2,17 +2,17 @@
   "manifest_version": 2,
   "name": "XDEMO",
   "version": "2.0",
-  "description": "用于向页面注入线上脚本的插件", 
+  "description": "向指定的页面注入远程脚本及样式，以达到改变页面元素，增强用户体验", 
   "browser_action": { 
     "default_icon": "img/128.png" ,
     "default_title": "XDEMO 2.0",
     "default_popup": "popup.html"    
   },
-  // "icons": { 
-  //   "16": "img/logo16.png",             
-  //   "48": "img/logo48.png",            
-  //   "128": "img/logo.png" 
-  // },    
+  "icons": { 
+    "16": "img/16.png",             
+    "48": "img/48.png",            
+    "128": "img/128.png" 
+  },    
   "options_page": "option.html",
   "background": {
     "scripts": ["js/background.js"]

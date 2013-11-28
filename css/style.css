@@ -1,563 +1,326 @@
-/* ============================================================
- * bootstrapSwitch v1.8 by Larentis Mattia @SpiritualGuru
- * http://www.larentis.eu/
- *
- * Enhanced for radiobuttons by Stein, Peter @BdMdesigN
- * http://www.bdmdesign.org/
- *
- * Project site:
- * http://www.larentis.eu/switch/
- * ============================================================
- * Licensed under the Apache License, Version 2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- * ============================================================ */
-.has-switch {
-  display: inline-block;
-  cursor: pointer;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  border: 1px solid;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  position: relative;
-  text-align: left;
-  overflow: hidden;
-  line-height: 8px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-  vertical-align: middle;
-  min-width: 100px;
+ @charset "utf-8";
+html, body, h1, h2, h3, h4, h5, h6, hr, p, iframe, dl, dt, dd, ul, ol, li, pre, form, fieldset, button, input, textarea, th, td {
+	margin: 0;
+	padding: 0
 }
-.has-switch.switch-mini {
-  min-width: 72px;
+body {
+	background-color: #FFF
 }
-.has-switch.switch-mini i.switch-mini-icons {
-  height: 1.20em;
-  line-height: 9px;
-  vertical-align: text-top;
-  text-align: center;
-  transform: scale(0.6);
-  margin-top: -1px;
-  margin-bottom: -1px;
+body, button, input, select, textarea, fieldset, label {
+	font: 12px/1.5 "Lucida Grande", tahoma, arial, \5b8b\4f53;
+	color: #666
 }
-.has-switch.switch-small {
-  min-width: 80px;
+h1, h2, h3, h4, h5, h6 {
+	font-size: 100%
 }
-.has-switch.switch-large {
-  min-width: 120px;
+ul, ol {
+	list-style: none
 }
-.has-switch.deactivate {
-  opacity: 0.5;
-  filter: alpha(opacity=50);
-  cursor: default !important;
+fieldset, img {
+	border: 0 none
 }
-.has-switch.deactivate label,
-.has-switch.deactivate span {
-  cursor: default !important;
+img {
+	-ms-interpolation-mode: bicubic
 }
-.has-switch > div {
-  display: inline-block;
-  width: 150%;
-  position: relative;
-  top: 0;
+i, em {
+	font-style: normal
 }
-.has-switch > div.switch-animate {
-  -webkit-transition: left 0.5s;
-  -moz-transition: left 0.5s;
-  -o-transition: left 0.5s;
-  transition: left 0.5s;
+table {
+	border-collapse: collapse;
+	border-spacing: 0
 }
-.has-switch > div.switch-off {
-  left: -50%;
+input, select, textarea, button {
+	font-size: 100%;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box
 }
-.has-switch > div.switch-on {
-  left: 0%;
+button, input[type=button], input[type=submit] {
+	cursor: pointer
 }
-.has-switch input[type=radio],
-.has-switch input[type=checkbox] {
-  display: none;
+input[type=search] {
+	-webkit-appearance: textfield
 }
-.has-switch span,
-.has-switch label {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-  height: 100%;
-  padding-bottom: 4px;
-  padding-top: 4px;
-  font-size: 14px;
-  line-height: 20px;
+textarea {
+	overflow-y: auto;
+	resize: vertical
 }
-.has-switch span.switch-mini,
-.has-switch label.switch-mini {
-  padding-bottom: 4px;
-  padding-top: 4px;
-  font-size: 10px;
-  line-height: 9px;
+.clear, .clearfix {
+	zoom: 1
 }
-.has-switch span.switch-small,
-.has-switch label.switch-small {
-  padding-bottom: 3px;
-  padding-top: 3px;
-  font-size: 12px;
-  line-height: 18px;
+.clear:after, .clearfix:after {
+	content: ' ';
+	display: block;
+	clear: both;
+	height: 0;
+	visibility: hidden
 }
-.has-switch span.switch-large,
-.has-switch label.switch-large {
-  padding-bottom: 9px;
-  padding-top: 9px;
-  font-size: 16px;
-  line-height: normal;
-}
-.has-switch label {
-  text-align: center;
-  margin-top: -1px;
-  margin-bottom: -1px;
-  z-index: 100;
-  width: 34%;
-  border-left: 1px solid #cccccc;
-  border-right: 1px solid #cccccc;
-  color: #333333;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #f5f5f5;
-  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
-  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #e6e6e6;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-.has-switch label:hover,
-.has-switch label:focus,
-.has-switch label:active,
-.has-switch label.active,
-.has-switch label.disabled,
-.has-switch label[disabled] {
-  color: #333333;
-  background-color: #e6e6e6;
-  *background-color: #d9d9d9;
-}
-.has-switch label:active,
-.has-switch label.active {
-  background-color: #cccccc \9;
-}
-.has-switch label i {
-  color: #000;
-  text-shadow: 0 1px 0 #fff;
-  line-height: 18px;
-  pointer-events: none;
-}
-.has-switch span {
-  text-align: center;
-  z-index: 1;
-  width: 33%;
-}
-.has-switch span.switch-left {
-  -webkit-border-top-left-radius: 4px;
-  -moz-border-radius-topleft: 4px;
-  border-top-left-radius: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  -moz-border-radius-bottomleft: 4px;
-  border-bottom-left-radius: 4px;
-}
-.has-switch span.switch-right {
-  color: #333333;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-  background-color: #f0f0f0;
-  background-image: -moz-linear-gradient(top, #e6e6e6, #ffffff);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e6e6e6), to(#ffffff));
-  background-image: -webkit-linear-gradient(top, #e6e6e6, #ffffff);
-  background-image: -o-linear-gradient(top, #e6e6e6, #ffffff);
-  background-image: linear-gradient(to bottom, #e6e6e6, #ffffff);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe6e6e6', endColorstr='#ffffffff', GradientType=0);
-  border-color: #ffffff #ffffff #d9d9d9;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #ffffff;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-.has-switch span.switch-right:hover,
-.has-switch span.switch-right:focus,
-.has-switch span.switch-right:active,
-.has-switch span.switch-right.active,
-.has-switch span.switch-right.disabled,
-.has-switch span.switch-right[disabled] {
-  color: #333333;
-  background-color: #ffffff;
-  *background-color: #f2f2f2;
-}
-.has-switch span.switch-right:active,
-.has-switch span.switch-right.active {
-  background-color: #e6e6e6 \9;
-}
-.has-switch span.switch-primary,
-.has-switch span.switch-left {
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #005fcc;
-  background-image: -moz-linear-gradient(top, #0044cc, #0088cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0044cc), to(#0088cc));
-  background-image: -webkit-linear-gradient(top, #0044cc, #0088cc);
-  background-image: -o-linear-gradient(top, #0044cc, #0088cc);
-  background-image: linear-gradient(to bottom, #0044cc, #0088cc);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0044cc', endColorstr='#ff0088cc', GradientType=0);
-  border-color: #0088cc #0088cc #005580;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #0088cc;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-.has-switch span.switch-primary:hover,
-.has-switch span.switch-left:hover,
-.has-switch span.switch-primary:focus,
-.has-switch span.switch-left:focus,
-.has-switch span.switch-primary:active,
-.has-switch span.switch-left:active,
-.has-switch span.switch-primary.active,
-.has-switch span.switch-left.active,
-.has-switch span.switch-primary.disabled,
-.has-switch span.switch-left.disabled,
-.has-switch span.switch-primary[disabled],
-.has-switch span.switch-left[disabled] {
-  color: #ffffff;
-  background-color: #0088cc;
-  *background-color: #0077b3;
-}
-.has-switch span.switch-primary:active,
-.has-switch span.switch-left:active,
-.has-switch span.switch-primary.active,
-.has-switch span.switch-left.active {
-  background-color: #006699 \9;
-}
-.has-switch span.switch-info {
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #41a7c5;
-  background-image: -moz-linear-gradient(top, #2f96b4, #5bc0de);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#2f96b4), to(#5bc0de));
-  background-image: -webkit-linear-gradient(top, #2f96b4, #5bc0de);
-  background-image: -o-linear-gradient(top, #2f96b4, #5bc0de);
-  background-image: linear-gradient(to bottom, #2f96b4, #5bc0de);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff2f96b4', endColorstr='#ff5bc0de', GradientType=0);
-  border-color: #5bc0de #5bc0de #28a1c5;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #5bc0de;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-.has-switch span.switch-info:hover,
-.has-switch span.switch-info:focus,
-.has-switch span.switch-info:active,
-.has-switch span.switch-info.active,
-.has-switch span.switch-info.disabled,
-.has-switch span.switch-info[disabled] {
-  color: #ffffff;
-  background-color: #5bc0de;
-  *background-color: #46b8da;
-}
-.has-switch span.switch-info:active,
-.has-switch span.switch-info.active {
-  background-color: #31b0d5 \9;
-}
-.has-switch span.switch-success {
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #58b058;
-  background-image: -moz-linear-gradient(top, #51a351, #62c462);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#51a351), to(#62c462));
-  background-image: -webkit-linear-gradient(top, #51a351, #62c462);
-  background-image: -o-linear-gradient(top, #51a351, #62c462);
-  background-image: linear-gradient(to bottom, #51a351, #62c462);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff51a351', endColorstr='#ff62c462', GradientType=0);
-  border-color: #62c462 #62c462 #3b9e3b;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #62c462;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-.has-switch span.switch-success:hover,
-.has-switch span.switch-success:focus,
-.has-switch span.switch-success:active,
-.has-switch span.switch-success.active,
-.has-switch span.switch-success.disabled,
-.has-switch span.switch-success[disabled] {
-  color: #ffffff;
-  background-color: #62c462;
-  *background-color: #4fbd4f;
-}
-.has-switch span.switch-success:active,
-.has-switch span.switch-success.active {
-  background-color: #42b142 \9;
-}
-.has-switch span.switch-warning {
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #f9a123;
-  background-image: -moz-linear-gradient(top, #f89406, #fbb450);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f89406), to(#fbb450));
-  background-image: -webkit-linear-gradient(top, #f89406, #fbb450);
-  background-image: -o-linear-gradient(top, #f89406, #fbb450);
-  background-image: linear-gradient(to bottom, #f89406, #fbb450);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff89406', endColorstr='#fffbb450', GradientType=0);
-  border-color: #fbb450 #fbb450 #f89406;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #fbb450;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-.has-switch span.switch-warning:hover,
-.has-switch span.switch-warning:focus,
-.has-switch span.switch-warning:active,
-.has-switch span.switch-warning.active,
-.has-switch span.switch-warning.disabled,
-.has-switch span.switch-warning[disabled] {
-  color: #ffffff;
-  background-color: #fbb450;
-  *background-color: #faa937;
-}
-.has-switch span.switch-warning:active,
-.has-switch span.switch-warning.active {
-  background-color: #fa9f1e \9;
-}
-.has-switch span.switch-danger {
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #d14641;
-  background-image: -moz-linear-gradient(top, #bd362f, #ee5f5b);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#bd362f), to(#ee5f5b));
-  background-image: -webkit-linear-gradient(top, #bd362f, #ee5f5b);
-  background-image: -o-linear-gradient(top, #bd362f, #ee5f5b);
-  background-image: linear-gradient(to bottom, #bd362f, #ee5f5b);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffbd362f', endColorstr='#ffee5f5b', GradientType=0);
-  border-color: #ee5f5b #ee5f5b #e51d18;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #ee5f5b;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-.has-switch span.switch-danger:hover,
-.has-switch span.switch-danger:focus,
-.has-switch span.switch-danger:active,
-.has-switch span.switch-danger.active,
-.has-switch span.switch-danger.disabled,
-.has-switch span.switch-danger[disabled] {
-  color: #ffffff;
-  background-color: #ee5f5b;
-  *background-color: #ec4844;
-}
-.has-switch span.switch-danger:active,
-.has-switch span.switch-danger.active {
-  background-color: #e9322d \9;
-}
-.has-switch span.switch-default {
-  color: #333333;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-  background-color: #f0f0f0;
-  background-image: -moz-linear-gradient(top, #e6e6e6, #ffffff);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e6e6e6), to(#ffffff));
-  background-image: -webkit-linear-gradient(top, #e6e6e6, #ffffff);
-  background-image: -o-linear-gradient(top, #e6e6e6, #ffffff);
-  background-image: linear-gradient(to bottom, #e6e6e6, #ffffff);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe6e6e6', endColorstr='#ffffffff', GradientType=0);
-  border-color: #ffffff #ffffff #d9d9d9;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #ffffff;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-.has-switch span.switch-default:hover,
-.has-switch span.switch-default:focus,
-.has-switch span.switch-default:active,
-.has-switch span.switch-default.active,
-.has-switch span.switch-default.disabled,
-.has-switch span.switch-default[disabled] {
-  color: #333333;
-  background-color: #ffffff;
-  *background-color: #f2f2f2;
-}
-.has-switch span.switch-default:active,
-.has-switch span.switch-default.active {
-  background-color: #e6e6e6 \9;
-}
-
-@charset "utf-8";
-
-html,body,h1,h2,h3,h4,h5,h6,hr,p,iframe,dl,dt,dd,ul,ol,li,pre,form,fieldset,button,input,textarea,th,td{margin:0;padding:0}body{background-color:#FFF}body,button,input,select,textarea,fieldset,label{font:12px/1.5 "Lucida Grande",tahoma,arial,\5b8b\4f53;color:#666}h1,h2,h3,h4,h5,h6{font-size:100%}ul,ol{list-style:none}fieldset,img{border:0 none}img{-ms-interpolation-mode:bicubic}i,em{font-style:normal}table{border-collapse:collapse;border-spacing:0}input,select,textarea,button{font-size:100%;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}button,input[type=button],input[type=submit]{cursor:pointer}input[type=search]{-webkit-appearance:textfield}textarea{overflow-y:auto;resize:vertical}.clear,.clearfix{zoom:1}.clear:after,.clearfix:after{content:' ';display:block;clear:both;height:0;visibility:hidden}
 
 	/*===== 样式重置 =====*/
-		::-webkit-scrollbar{
-			background-color:#FFF;
-			height:10px;
-			-webkit-appearance:none;
-			width:10px;
-		}
+		::-webkit-scrollbar {
+ background-color:#FFF;
+ height:10px;
+ -webkit-appearance:none;
+ width:10px;
+}
 
-		::-webkit-scrollbar-thumb{
-			background-color:rgba(100,100,100,.5);
-		}
-
-		html,body{height:100%;overflow:auto;}
-		body, button, input, select, textarea, fieldset, label{font-family:microsoft yahei;font-weight:400;}
-		a{color:#666; text-decoration:none;}
-		a:hover{color:#D70000; text-decoration:underline;}
-		.no_bob{border-bottom:none!important;}
-
-
-	/*===== 左侧 =====*/
-		.ui_s{overflow:auto;position:fixed;   width:200px;height:100%; background-color:#191818; font-family:"microsoft yahei";box-shadow:1px 0px 5px rgba(0,0,0,.5)}
-		.ui_s_unfold{width:200px; opacity:1; -webkit-transition:width 0.2s ease-out 0,opacity 0.2s ease-out 0}
-
-
-		/*===== logo =====*/
-		.ui_logo{margin-top:20px;}
-			.ui_logo h1{
-				display:block;
-				padding:15px 20px;
-				font-size:18px;
-				font-weight:normal;
-				color:#FFF;
-			}
-			.ui_logo img{
-				width:150px;
-			}
-
-		/*===== 左侧导航 =====*/
-		.ui_menu{margin-top:50px;}
-			.ui_menu_item{border-bottom:1px solid #333333;}
-			.ui_menu_item:first-child{border-top:1px solid #333333;}
-			.ui_menu_item:last-child{border-bottom:none;}
-				.ui_menu_tit{display:none; padding:5px 10px; font-size:16px; font-weight:normal; color:#FFF;}
-
-				.ui_menu_con a{display:block; padding:5px 10px 5px 20px;font-size:14px; line-height:34px; color:#999999;white-space:nowrap;}
-				.ui_menu_con a:hover{background-color:#333333; text-decoration:none;}
-
-				.ui_menu_con .active a,
-				.ui_menu_con .active a:hover{background-color:#00a3d7; color:#FFF;-webkit-transition:background 0.2s ease-out 0s;}
-
-
-	/*===== 右侧内容 =====*/
-		.ui_m{position:relative; height:100%; overflow:auto; position:absolute;width:-webkit-calc(100% - 400px);width:-moz-calc(100% - 400px);width:calc(100% - 200px);left:200px;padding: 40px 100px 20px 100px;  font-family:"microsoft yahei"; line-height:2.5;}
-
-			.ui_m_item{position: absolute; opacity:0;left:120px; width: -webkit-calc(100% - 200px);  /*margin:0 auto; padding:20px 200px; border-bottom:1px solid #EEE;*/}
-/*			.ui_m_item:last-child{opacity:1;}*/
-			.ui_m_item.active{opacity:1;z-index:99; left:100px; -webkit-transition:opacity 0.3s ease-out 0s,left 0.2s ease-out 0s;}
-
-				.ui_h2{padding:20px 0; border-bottom:1px solid #EEE; font-size:36px; font-weight:normal; text-align:center;}
-				.ui_h3{margin-bottom:20px; font-size:24px; font-weight:normal; border-bottom:1px solid #EEE;clear:both;}
-
-				.ui_con{color:#999;}
-/*				.ui_con li,
-				.ui_con p{margin:10px 0;}*/
-				.ui_con img{max-width:90%;}
-				.ui_con .con_txt{font-size:14px;margin-bottom:0px;}
-				
-				.con_tit{font-size:18px;}
-
-				.code_area{margin-top:20px;}
-
-
-				.ui_code{margin:20px 0; font-family:tahoma,arial,\5b8b\4f53; line-height:18px;}
-
-
-	/*===== 小接口 =====*/
-		.tag_1{
-			display:inline-block;
-			margin:0 5px;
-			padding:0 5px;
-			border-radius:2px;
-			border-width:1px;
-			border-style:solid;
-			border-color:#CCC #EEE #EEE #EEE;
-			background-color:#F1F1F1;
-			line-height:18px;
-		}
-
-		.tag_2{
-			display:inline-block;
-			margin:0 5px;
-			color:#333;
-		}
-
-
-	/*===== 代码高亮 =====*/
-		.snippet{margin:10px 0 40px; padding:10px; font-size:14px; line-height:2;}
-
-.nav-tabs>li{font-size:14px;}
-.tab-content{padding-top:20px;}
-
-
-.manual_create input[type="text"],
-.manual_create textarea{width:460px;}
-.form-horizontal .control-label{font-size:14px;}
-.form-control{height:20px;}
-textarea.form-control{height:72px;}
-
-
-.auto_load_input{float:left;width:460px;margin-right:20px;}
-.auto_load_input+a{color:#096dba;}
-.auto_load_table{width:460px; margin-top:40px;}
-
-.group_select{float:left; width:200px;margin-right:20px;margin-top:4px;}
-.group_select + a{color:#096dba;vertical-align:-5px; }
-.auto_load_group_selector{margin-bottom:10px;}
-.auto_load_group_selector select{float:none;}
-.xdemo_platform_table{clear:both;margin-top:15px;}
-.xdemo_platform_table th,
-.xdemo_platform_table td{font-size:14px;color:#666666;}
-.xdemo_platform_table th{white-space:nowrap;}
-.xdemo_platform_table .col1{white-space:nowrap;}
-.xdemo_platform_table .col_des{width:52%;}
-.xdemo_edit_layer .modal-body{
+		::-webkit-scrollbar-thumb {
+ background-color:rgba(100,100,100,.5);
+}
+html, body {
+	height: 100%;
+	overflow: auto;
+}
+body, button, input, select, textarea, fieldset, label {
+	font-family: microsoft yahei;
+	font-weight: 400;
+}
+a {
+	color: #666;
+	text-decoration: none;
+}
+a:hover {
+	color: #D70000;
+	text-decoration: underline;
+}
+em {
+	padding: 2px 4px;
+	font-size: 90%;
+	color: #c7254e;
+	background-color: #f9f2f4;
+	white-space: nowrap;
+	border-radius: 4px;
+}
+.no_bob {
+	border-bottom: none!important;
+}
+/*===== 左侧 =====*/
+.ui_s {
+	overflow: auto;
+	position: fixed;
+	width: 200px;
+	height: 100%;
+	background-color: #191818;
+	font-family: "microsoft yahei";
+	box-shadow: 1px 0px 5px rgba(0,0,0,.5)
+}
+.ui_s_unfold {
+	width: 200px;
+	opacity: 1;
+	-webkit-transition: width 0.2s ease-out 0, opacity 0.2s ease-out 0
+}
+/*===== logo =====*/
+.ui_logo {
+	margin-top: 20px;
+}
+.ui_logo h1 {
+	display: block;
+	padding: 15px 20px;
+	font-size: 18px;
+	font-weight: normal;
+	color: #FFF;
+}
+.ui_logo img {
+	width: 150px;
+}
+/*===== 左侧导航 =====*/
+.ui_menu {
+	margin-top: 50px;
+}
+.ui_menu_item {
+	border-bottom: 1px solid #333333;
+}
+.ui_menu_item:first-child {
+	border-top: 1px solid #333333;
+}
+.ui_menu_item:last-child {
+	border-bottom: none;
+}
+.ui_menu_tit {
+	display: none;
+	padding: 5px 10px;
+	font-size: 16px;
+	font-weight: normal;
+	color: #FFF;
+}
+.ui_menu_con a {
+	display: block;
+	padding: 5px 10px 5px 20px;
+	font-size: 14px;
+	line-height: 34px;
+	color: #999999;
+	white-space: nowrap;
+}
+.ui_menu_con a:hover {
+	background-color: #333333;
+	text-decoration: none;
+}
+.ui_menu_con .active a,  .ui_menu_con .active a:hover {
+	background-color: #00a3d7;
+	color: #FFF;
+	-webkit-transition: background 0.2s ease-out 0s;
+}
+/*===== 右侧内容 =====*/
+.ui_m {
+	position: relative;
+	height: 100%;
+	overflow-y: auto;
+	position: absolute;
+	width: -webkit-calc(100% - 400px);
+	width: -moz-calc(100% - 400px);
+	width: calc(100% - 200px);
+	left: 200px;
+	padding: 40px 100px 20px 100px;
+	font-family: "microsoft yahei";
+	line-height: 2.5;
+	overflow-x: hidden;
+}
+.ui_m_item {
+	position: absolute;
+	opacity: 0;
+	left: 120px;
+	width: -webkit-calc(100% - 200px);
+}
+.ui_m_item.active {
+	opacity: 1;
+	z-index: 99;
+	left: 100px;
+	-webkit-transition: opacity 0.3s ease-out 0s, left 0.2s ease-out 0s;
+}
+.github_link {
+	position: absolute;
+	right: -100px;
+	top: -40px;
+}
+.ui_h2 {
+	padding: 20px 0;
+	border-bottom: 1px solid #EEE;
+	font-size: 36px;
+	font-weight: normal;
+	text-align: center;
+}
+.ui_h3 {
+	margin-bottom: 20px;
+	font-size: 24px;
+	font-weight: normal;
+	border-bottom: 1px solid #EEE;
+	clear: both;
+}
+.ui_con {
+	color: #999;
+}
+.ui_con img {
+	max-width: 90%;
+}
+.ui_con .con_txt {
+	font-size: 14px;
+	margin-bottom: 0px;
+}
+.con_tit {
+	font-size: 18px;
+}
+.code_area {
+	margin-top: 20px;
+}
+.ui_code {
+	margin: 20px 0;
+	font-family: tahoma, arial, \5b8b\4f53;
+	line-height: 18px;
+}
+/*===== 小接口 =====*/
+.tag_1 {
+	display: inline-block;
+	margin: 0 5px;
+	padding: 0 5px;
+	border-radius: 2px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #CCC #EEE #EEE #EEE;
+	background-color: #F1F1F1;
+	line-height: 18px;
+}
+.tag_2 {
+	display: inline-block;
+	margin: 0 5px;
+	color: #333;
+}
+/*===== 代码高亮 =====*/
+.snippet {
+	margin: 10px 0 40px;
+	padding: 10px;
+	font-size: 14px;
+	line-height: 2;
+}
+.nav-tabs>li {
+	font-size: 14px;
+}
+.tab-content {
+	padding-top: 20px;
+}
+.manual_create input[type="text"], .manual_create textarea {
+	width: 460px;
+}
+.form-horizontal .control-label {
+	font-size: 14px;
+}
+.form-control {
+	height: 20px;
+}
+textarea.form-control {
+	height: 72px;
+}
+.auto_load_input {
+	float: left;
+	width: 460px;
+	margin-right: 20px;
+}
+.auto_load_input+a {
+	color: #096dba;
+}
+.auto_load_table {
+	width: 460px;
+	margin-top: 40px;
+}
+.group_select {
+	float: left;
+	width: 200px;
+	margin-right: 20px;
+	margin-top: 4px;
+}
+.group_select + a {
+	color: #096dba;
+	vertical-align: -5px;
+}
+.auto_load_group_selector {
+	margin-bottom: 10px;
+}
+.auto_load_group_selector select {
+	float: none;
+}
+.xdemo_platform_table {
+	clear: both;
+	margin-top: 15px;
+}
+.xdemo_platform_table th, .xdemo_platform_table td {
+	font-size: 14px;
+	color: #666666;
+}
+.xdemo_platform_table th {
+	white-space: nowrap;
+}
+.xdemo_platform_table .col1 {
+	white-space: nowrap;
+}
+.xdemo_platform_table .col_des {
+	width: 52%;
+}
+.xdemo_platform_table .loading_row {
+	text-align: center;
+}
+.xdemo_edit_layer .modal-body {
 	height: 450px;
-overflow-y: scroll;
+	overflow-y: scroll;
 }
-.xdemo_edit_layer input[type="text"], .xdemo_edit_layer textarea{width:80%;}
-
-em{
-padding: 2px 4px;
-font-size: 90%;
-color: #c7254e;
-background-color: #f9f2f4;
-white-space: nowrap;
-border-radius: 4px;
-
+.xdemo_edit_layer input[type="text"], .xdemo_edit_layer textarea {
+	width: 80%;
 }
-.header{position:relative; overflow:hidden;}
-.header h1{float:left;margin:15px 0 0 20px;}
-.header img{width:120px;}
-.setting_link{float:right;margin:15px 20px 0 0;}
-.about_link{position:absolute;right:44px;top:34px;}
-.cur_demo{clear:both; width:300px;margin:20px 10px 10px 10px; font-size:14px;}
-.cur_demo_list li:first-child{border-top:none;}
-.cur_demo_list li{line-height:36px;border-top:#ddd dotted 1px;overflow:hidden;}
-.cur_demo_list li.empty{padding-top:15px;padding-bottom:10px; text-align:center;line-height:22px;}
-.make-switch{float:right;margin-top:4px;}
-
-
