@@ -46,4 +46,4 @@ XDEMO（音译：“插DEMO”），用于向指定的页面注入远程脚本�
 
 5.在使用过程中如有问题或有任何建议，欢迎联系ReeQi ，[GitHub](https://github.com/simplelife7) ,[微博](http://weibo.com/u/1913890364)。^_^
 
-6.感谢`OXOX.IO`团队成员对XDEMO的大力支持及宝贵意见！
+6.感谢[OXOX.IO](http://oxox.io)``团队成员对XDEMO的大力支持及宝贵意见！
