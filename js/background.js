@@ -103,11 +103,13 @@ chrome.tabs.onActivated.addListener(function(data) {
 		if (localStorage.getItem("xDemoLength") !== null) {
 			var num = 0;
 			var xDemoLength = parseInt(localStorage.getItem("xDemoLength"));
+			console.log("xDemoLength:");
 			console.log(xDemoLength);
 			for (var i = 1; i <= xDemoLength; i++) {
 
 				if (localStorage.getItem("xDemo_" + i) !== null) {
 					var getXdemoItem = JSON.parse(localStorage.getItem("xDemo_" + i));
+					console.log("getXdemoItem:");
 					console.log(getXdemoItem);
 					var xDemoMatches = getXdemoItem.xDemoMatches;
 					var domain = UrlRegEx(tab.url)[2];
@@ -143,7 +145,7 @@ chrome.tabs.onActivated.addListener(function(data) {
 
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	console.log('tttt');
+	console.log('onUpdated:');
 	// 判断页面是否加载完毕
 	if (changeInfo.status == "complete") {
 		var domain = UrlRegEx(tab.url)[2];
@@ -177,14 +179,14 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 							break;
 						}
 					}
-					console.log(flag);
+					console.log("flag:"+flag);
 
 					if (flag == 1) {
 						if (xDemoStatus == "on" && domainMatch(domain, _domain)) {
 
 
-							//嵌入样式的函数
-							var includeLinkFunction = 'function includeLinkStyle(url) {var link = document.createElement("link");link.rel = "stylesheet";link.type = "text/css";link.href = url;document.getElementsByTagName("head")[0].appendChild(link);};';
+							//嵌入样式的函数 如果带https? .replace(/^http[s]?:/,"")
+							var includeLinkFunction = 'function includeLinkStyle(url) {var link = document.createElement("link");link.rel = "stylesheet";link.type = "text/css";link.href = url; document.getElementsByTagName("head")[0].appendChild(link);};';
 							var cssLink = '';
 							for (var j in xDemoCss) {
 								cssLink += 'includeLinkStyle("' + xDemoCss[j] + '?t=' + Date.parse(new Date()) + '");';
@@ -192,7 +194,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 							var cssRequest = includeLinkFunction + cssLink;
 
 							//嵌入脚本的函数script.async = "async";script.defer = "defer";
-							var includeScriprtFunction = 'function includeScriprt(url){var script = document.createElement("script");script.type="text/javascript";script.src = url;document.getElementsByTagName("body")[0].appendChild(script);};'
+							var includeScriprtFunction = 'function includeScriprt(url){var script = document.createElement("script");script.type="text/javascript";script.charset="UTF-8";script.src = url;document.getElementsByTagName("body")[0].appendChild(script);};'
 
 							var jsLink = '';
 							for (var k in xDemoJs) {

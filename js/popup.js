@@ -45,16 +45,16 @@ function domainMatch(domain,_domain){
 
 var popup = {
 	getDemos : function(){
-		console.log('eee');
+		console.log('popupJs:popup:getDemos');
 		chrome.tabs.query({active:true},function(tab){
 
-			console.log(tab[0].url);
+			console.log('popupJs:popup:getDemos:tab[0]:'+tab[0].url);
 			var domain = UrlRegEx(tab[0].url)[2];
-			console.log(domain);
+			console.log("popupJs:popup:domain:"+domain);
 			if(localStorage.getItem("xDemoLength") !==null){
-				console.log('tttttt');
+				console.log('has xDemo in localStorage');
 				var xDemoLength = parseInt(localStorage.getItem("xDemoLength"));
-				console.log(xDemoLength);
+				console.log('xDemo Num:' + xDemoLength);
 				var demoListHtml = '';
 				for(var i = 1; i <=  xDemoLength; i++){
 
@@ -92,24 +92,25 @@ var popup = {
 			if($('#demoList').html() == ''){
 				console.log('none');
 				$('#demoList').append('<li class="empty">当前页面没有可用的DEMO<br/>可进入插件设置界面添加</li>')
-			}					
+			}
 		})
 	},
 	setStatus : function(){
-		console.log('uuuu');
-			$('#demoList .make-switch').on('switch-change', function (e, data) {
-				console.log('ttttt');
-				var el = $(data.el).parent().parent();
-				console.log(el);
-				var xDemoIndex = el.attr('data-index');
-				var getXdemoItem = JSON.parse(localStorage.getItem(xDemoIndex));
-				if(getXdemoItem.xDemoStatus == 'on'){
-					getXdemoItem.xDemoStatus = 'off';
-				}else{
-					getXdemoItem.xDemoStatus = 'on';
-				}
-				localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));				
-			});	
+		console.log('popupJs:setStatus:');
+        $('#demoList .make-switch').on('switch-change', function (e, data) {
+            console.log('clickOn trigger switch-change');
+            var el = $(data.el).parent().parent();
+            console.log("change Item:");
+            console.log(el);
+            var xDemoIndex = el.attr('data-index');
+            var getXdemoItem = JSON.parse(localStorage.getItem(xDemoIndex));
+            if(getXdemoItem.xDemoStatus == 'on'){
+                getXdemoItem.xDemoStatus = 'off';
+            }else{
+                getXdemoItem.xDemoStatus = 'on';
+            }
+            localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
+        });	
 
 
 	},

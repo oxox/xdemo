@@ -19,14 +19,14 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://*.yixun.com/*","http://localhost/*"],
+      "matches": ["http://*.jd.com/*","https://*.jd.com/*","http://localhost/*"],
       "js" : ["js/jquery.min.js","js/content.js"]
     },
-      {
-        "matches": ["http://xdemo.reeqi.me/index.php/welcome/*"],
-        "js": ["js/getid.js"],
-        "run_at":"document_end"
-      }
+    {
+      "matches": ["http://xdemo.reeqi.me/index.php/welcome/*"],
+      "js": ["js/getid.js"],
+      "run_at":"document_end"
+    }
   ],  
   "content_security_policy": "script-src 'self' https://raw.github.com; object-src 'self'",
 	"permissions": ["tabs","http://*/","https://*/"],

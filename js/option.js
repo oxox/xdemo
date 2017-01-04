@@ -1,5 +1,24 @@
+// 应用 ID，用来识别应用
+var APP_ID = 'j347eTQ9RjXQMkPIo5VJRjTz-gzGzoHsz';
 
+// 应用 Key，用来校验权限（Web 端可以配置安全域名来保护数据安全）
+var APP_KEY = 'xPkM719XbnWeAkLOIHzdldxD';
 
+// 初始化
+AV.init({
+  appId: APP_ID,
+  appKey: APP_KEY
+});
+
+var TestObject = AV.Object.extend('TestObject');
+var testObject = new TestObject();
+/*testObject.save({
+  testabc: 'abc123'
+}).then(function() {
+  alert('LeanCloud works!');
+}).catch(function(err) {
+  alert('error:' + err);
+});*/
 
 var xdemoOption = {
 
@@ -71,7 +90,7 @@ var xdemoOption = {
 				localStorage.setItem("xDemo_" + xDemoLength,JSON.stringify(xDemoData));
 
 				alert('添加成功');
-				window.location.reload();			
+				window.location.reload();
 			})		
 
 	},
@@ -134,7 +153,7 @@ var xdemoOption = {
 						xDemoName : xDemo.name,
 						xDemoEname : xDemo.ename,
 						xDemoDes : xDemo.descrition,
-						xDemoGroup : xDemo.group,						
+						xDemoGroup : xDemo.group,
 						xDemoManifestFile : optionFileUrl,
 						xDemoMatches : xDemo.matches,
 						xDemoVersion : xDemo.version,
@@ -155,15 +174,15 @@ var xdemoOption = {
 								if(getXdemoItem.xDemoVersion == xDemo.version){
 									alert('这个DEMO无版本更新');
 									has++;
-									break;							
+									break;
 								}else{
 									alert('这个DEMO已更新');
 									localStorage.setItem("xDemo_" + k,JSON.stringify(xDemoData));
 									has++;
-									break;						
+									break;
 								}
 								
-							}						
+							}
 						}else{
 							continue;
 						}
@@ -204,7 +223,7 @@ var xdemoOption = {
 					var getXdemoItem = JSON.parse(localStorage.getItem("xDemo_"+i));
 					console.log(getXdemoItem);
 					var xDemoJs = getXdemoItem.xDemoJs,
-							xDemoGroup = getXdemoItem.xDemoGroup || '易迅',
+							xDemoGroup = getXdemoItem.xDemoGroup || 'o2Team',
 							xDemoCss = getXdemoItem.xDemoCss,
 							xDemoName = getXdemoItem.xDemoName,
 							xDemoAuthor = getXdemoItem.xDemoAuthor,
@@ -269,7 +288,7 @@ var xdemoOption = {
 		// this.updateXdemoEvent();
 
 		// // 编辑DEMO
-		// this.editXdemoEvent();		
+		// this.editXdemoEvent();
 
 		// // 开关DEMO
 		// this.switchXdemoEvent();
@@ -311,9 +330,6 @@ var xdemoOption = {
 
 	uploadXdemoEvent : function(xDemoIndex){
 		
-
-
-
 		var checkAuthor = function(demoIndex,localAuthor){
 			var getXdemoItem = JSON.parse(localStorage.getItem(demoIndex));
 			if(getXdemoItem.xDemoAuthor == ''){
@@ -321,7 +337,7 @@ var xdemoOption = {
 			}
 
 			if(getXdemoItem.xDemoAuthor !== localAuthor){
-				alert('您要提交的DEMO作者与您的用户名不符，无法提交，请联系reeqiwu解决');
+				alert('您要提交的DEMO作者与您的用户名不符，无法提交，请联系开发者解决');
 			}else{
 			//var inputUploadXdemoAuthor = getXdemoItem.xDemoAuthor;
 				var postData = {
@@ -343,21 +359,21 @@ var xdemoOption = {
 						url: 'http://xdemo.reeqi.me/index.php/welcome/upload_unoption' ,
 						data : {
 							name : getXdemoItem.xDemoName,
-							ename :getXdemoItem.xDemoEname,
+							ename : getXdemoItem.xDemoEname,
 							data : JSON.stringify(postData),
 							author : getXdemoItem.xDemoAuthor,
 							des : getXdemoItem.xDemoDes,
-				  		group : getXdemoItem.xDemoGroup,							
-							url :	getXdemoItem.xDemoManifestFile
+                            group : getXdemoItem.xDemoGroup,
+							url : getXdemoItem.xDemoManifestFile
 						},
 						success: function(data){
 
-							localStorage.setItem(demoIndex,JSON.stringify(getXdemoItem));
+							localStorage.setItem(demoIndex, JSON.stringify(getXdemoItem));
 							//localStorage.setItem('author',inputUploadXdemoAuthor);
 							if(data == 'done'){
 								alert('提交成功');
 							}else if(data == 'writeError'){
-								alert('文件写入失败，请联系reeqiwu,谢谢！');
+								alert('文件写入失败，请联系开发者，谢谢！');
 							}
 						}
 					});
@@ -381,7 +397,7 @@ var xdemoOption = {
 								alert('提交成功');
 							}
 						}
-					});						
+					});
 				}else{
 					$.ajax({
 						type: 'POST',
@@ -391,9 +407,9 @@ var xdemoOption = {
 							ename :getXdemoItem.xDemoEname,
 							author : getXdemoItem.xDemoAuthor,
 							des : getXdemoItem.xDemoDes,
-							group : getXdemoItem.xDemoGroup,							
+							group : getXdemoItem.xDemoGroup,
 							data : JSON.stringify(postData),
-							url :	getXdemoItem.xDemoManifestFile
+							url : getXdemoItem.xDemoManifestFile
 						},
 						success: function(data){
 
@@ -402,7 +418,7 @@ var xdemoOption = {
 							if(data == 'done'){
 								alert('提交成功');
 							}else if(data == 'writeError'){
-								alert('文件写入失败，请联系reeqiwu,谢谢！');
+								alert('文件写入失败，请联系开发者，谢谢！');
 							}
 						}
 					});
@@ -554,7 +570,7 @@ var xdemoOption = {
 			console.log(xDemoCssCon);
 			$('#inputXdemoCss').val(xDemoCssCon);
 			$('#inputXdemoJs').val(xDemoJsCon);	
-			$('#inputXdemoMatches').val(xDemoMatchesCon);			
+			$('#inputXdemoMatches').val(xDemoMatchesCon);
 		},
 
 
@@ -654,6 +670,7 @@ var xdemoOption = {
 				$(this).parent().addClass('active');
 				var id = $(this).attr('href');
 				$(id).addClass('active');
+                location.hash = id;
 			}
 			
 		});
@@ -674,7 +691,7 @@ var xdemoOption = {
 
 						var xDemoLength = localStorage.getItem("xDemoLength") || 1;
 						if(xDemo.group == undefined){
-							xDemo.group = '易迅';
+							xDemo.group = 'o2Team';
 						}
 
 						var xDemoData = {
@@ -734,7 +751,8 @@ var xdemoOption = {
 		var xDemoPlatformListHtmlTemple = '';
 		$.ajax({
 			type: 'GET',
-			url: 'http://xdemo.reeqi.me/index.php/welcome/getlist_json' ,
+			//url: 'http://xdemo.reeqi.me/index.php/welcome/getlist_json' ,
+			url: 'http://gengshu.net/getList.json' ,
 			dataType: 'json',
 			success: function(data){
 				$("#xDemoPlatformList").html('');
@@ -750,7 +768,7 @@ var xdemoOption = {
 						xDemoName : pListData[i].name,
 						xDemoDes : pListData[i].des,
 						xDemoAuthor : pListData[i].author,
-						xDemoGroup : pListData[i].group || '易迅',
+						xDemoGroup : pListData[i].group || 'o2Team',
 						xDemoUrl : pListData[i].url
 					})
 				}
@@ -767,9 +785,40 @@ var xdemoOption = {
 
 	// 获取业务列表
 	getGroupList : function(){
-		$.ajax({
+        var query = new AV.Query('GroupList');
+            query.select(['groupName']);
+            query.find().then(function(data){
+				var template = $('#groupItemTemplate').html();
+				var groupListArr = {
+					items : []
+				};
+
+                for(var i in data){
+                    groupListArr.items.push({groupItem : data[i].get("groupName")});
+                }
+
+				console.log(groupListArr);
+
+				var xDemoItemHtml = Mustache.to_html(template, groupListArr);
+
+				$('#createDemoGroup,#myDemoGroup,#demoListGroup,#autoLoadDemoGroup').append(xDemoItemHtml);
+				if(localStorage.getItem("commonGroup") !== null){
+					var commonGroup = localStorage.getItem("commonGroup");
+					$('#createDemoGroup option,#myDemoGroup option,#demoListGroup option').each(function(index, el) {
+						_this = el;
+						if($(_this).html() == commonGroup){
+							$(_this).attr('selected','selected');
+						}
+					});
+				}
+				xdemoOption.demoListFilter();
+				xdemoOption.myDemoFilter();
+				xdemoOption.setCommonGroup();
+        });
+		/*$.ajax({
 			type: 'GET',
-			url: 'http://xdemo.reeqi.me/index.php/welcome/getGroupList_json' ,
+			//url: 'http://xdemo.reeqi.me/index.php/welcome/getGroupList_json' ,
+			url: 'http://gengshu.net/getGroupList.json' ,
 			dataType: 'json',
 			success: function(data){
 				var groupListArr = {
@@ -796,7 +845,7 @@ var xdemoOption = {
 				xdemoOption.myDemoFilter();
 				xdemoOption.setCommonGroup();
 			}
-		});		
+		});*/
 	},
 
 	// DEMO列表业务过滤
@@ -881,8 +930,11 @@ var xdemoOption = {
 			event.preventDefault();;
 			$('#js_ui_menu a[href="#about"]').click();
 		});
+        if (location.hash !="") {
+			$('#js_ui_menu a[href=' + location.hash + ']').click();
+        }
 	}
-} 
+};
 
 /**
  * URL解析

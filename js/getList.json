@@ -1,0 +1,16 @@
+{
+    "nu1":{
+        "name" : "clstag检测",
+        "des" : "测试描述",
+        "author" : "joy",
+        "group" : "o2team",
+        "url" : "http://www.gengshu.net/clstag.js"
+  },
+  "nu2":{
+      "name" : "样式异常测试",
+      "des" : "样式异常测试，来自财富通团队",
+      "author" : "财富通",
+      "group" : "财富通团队",
+      "url" : "https://www.tenpay.com/v2/labs/wrtb/js/unit_demo.js"
+  }
+}
