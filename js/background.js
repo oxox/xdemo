@@ -247,7 +247,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
  */
 function UrlRegEx(urlt) {
 	//如果加上/g参数，那么只返回$0匹配。也就是说arr.length = 0   
-	var re = /(\w+):\/\/([^\:|\/]+)(\:\d*)?(.*\/)([^#|\?|\n]+)?(#.*)?(\?.*)?/gi;
+	var re = /(\w+):\/\/([^\:|\/]+)(\:\d*)?(.*\/)?([^#|\?|\n]+)?(#.*)?(\?.*)?/gi;
 	var arr = re.exec(urlt);
 	//var arr = urlt.match(re);   
 	return arr;

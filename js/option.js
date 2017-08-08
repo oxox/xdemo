@@ -47,14 +47,14 @@ var xdemoOption = {
 
 				if($('#inputNewXdemoCss').val() !== ''){
 					if (urlVerify2 == null){
-						alert('请输入正确的CSS URL'); 
+						alert('请输入正确的CSS URL');
 						return false;
 					}
 				}
 
 				if($('#inputNewXdemoJs').val() !== ''){
 					if (urlVerify3 == null){
-						alert('请输入正确的JS URL'); 
+						alert('请输入正确的JS URL');
 						return false;
 					}
 				}
@@ -86,8 +86,8 @@ var xdemoOption = {
 				}
 
 				xDemoLength = parseInt(xDemoLength) + 1;
-				localStorage.setItem("xDemoLength",xDemoLength);
-				localStorage.setItem("xDemo_" + xDemoLength,JSON.stringify(xDemoData));
+				localStorage.setItem("xDemoLength", xDemoLength);
+				localStorage.setItem("xDemo_" + xDemoLength, JSON.stringify(xDemoData));
 
 				alert('添加成功');
 				window.location.reload();
@@ -109,7 +109,7 @@ var xdemoOption = {
 			if (urlVerify == null){
 				alert('请输入正确的配置文件URL'); 
 				return false;
-			}				
+			}
 
 			$.ajax({
 				type: 'GET',
@@ -187,15 +187,16 @@ var xdemoOption = {
 							continue;
 						}
 					};
+                    // 如果不存在，就存入
 					if(has !== 1){
 						if(localStorage.getItem("xDemoLength") == null){
 							localStorage.setItem("xDemoLength",1);
 						}else{
 							xDemoLength = parseInt(xDemoLength) + 1;
-							localStorage.setItem("xDemoLength",xDemoLength);
+							localStorage.setItem("xDemoLength", xDemoLength);
 						}
 						
-						localStorage.setItem("xDemo_" + xDemoLength,JSON.stringify(xDemoData));
+						localStorage.setItem("xDemo_" + xDemoLength, JSON.stringify(xDemoData));
 						alert('添加成功');
 						window.location.reload();
 					}						
@@ -300,29 +301,41 @@ var xdemoOption = {
 		
 	},
 
+
+    // 列表里 更新、开关、删除、编辑、上传 在这里监听分发
 	xDemoListEvent : function(){
 		$('#myXdemoList').click(function(e){
 			e.preventDefault();
 
 			if($(e.target).data('updateIndex')){
+
 				// 更新DEMO
 				var xDemoIndex =  $(e.target).data('updateIndex');
 				xdemoOption.updateXdemoEvent(xDemoIndex);
 
-			}else if($(e.target).data('switchIndex')){
+			} else if($(e.target).data('switchIndex')){
+
 				// 开关DEMO
 				xdemoOption.switchXdemoEvent(e);
 
-			}else if($(e.target).data('deleteIndex')){
+			} else if($(e.target).data('deleteIndex')){
+
 				//删除DEMO
 				var xDemoIndex =  $(e.target).data('deleteIndex');
 				xdemoOption.delXdemoEvent(xDemoIndex);
-			}else if($(e.target).data('editIndex')){
+
+			} else if($(e.target).data('editIndex')){
+
+                //编辑
 				var xDemoIndex =  $(e.target).data('editIndex');
 				xdemoOption.editXdemoEvent(xDemoIndex);
-			}else if($(e.target).data('uploadIndex')){
+
+			} else if($(e.target).data('uploadIndex')){
+
+                //上传
 				var xDemoIndex =  $(e.target).data('uploadIndex');
 				xdemoOption.uploadXdemoEvent(xDemoIndex);
+
 			}
 
 		})
@@ -330,107 +343,82 @@ var xdemoOption = {
 
 	uploadXdemoEvent : function(xDemoIndex){
 		
-		var checkAuthor = function(demoIndex,localAuthor){
+		var checkAuthor = function(demoIndex,localAuthor) {
+
 			var getXdemoItem = JSON.parse(localStorage.getItem(demoIndex));
+			var xDemoObjectId = getXdemoItem.xDemoObjectId; // 用xDemoObjectId判断是新增还是更新
+
 			if(getXdemoItem.xDemoAuthor == ''){
 				getXdemoItem.xDemoAuthor = localAuthor;
+			} else if(getXdemoItem.xDemoAuthor !== localAuthor){
+				alert('您要提交的DEMO作者与您的用户名不符，无法提交，请联系开发者解决');
 			}
 
-			if(getXdemoItem.xDemoAuthor !== localAuthor){
-				alert('您要提交的DEMO作者与您的用户名不符，无法提交，请联系开发者解决');
-			}else{
-			//var inputUploadXdemoAuthor = getXdemoItem.xDemoAuthor;
-				var postData = {
-				  name : getXdemoItem.xDemoName,
-				  version : getXdemoItem.xDemoVersion,
-				  css : getXdemoItem.xDemoCss,
-				  js : getXdemoItem.xDemoJs,
-				  matches : getXdemoItem.xDemoMatches,
-				  ename : getXdemoItem.xDemoEname,
-				  group : getXdemoItem.xDemoGroup,
-				  author : localAuthor,
-				  descrition : getXdemoItem.xDemoDes
-				}				
-				if(getXdemoItem.xDemoManifestFile == ''){
+			var postData = {
+				name : getXdemoItem.xDemoName,
+				ename : getXdemoItem.xDemoEname,
+				author : localAuthor,
+				descrition : getXdemoItem.xDemoDes,
+				group : getXdemoItem.xDemoGroup,
+				version : getXdemoItem.xDemoVersion,
+				matches : getXdemoItem.xDemoMatches,
+				js : getXdemoItem.xDemoJs,
+				css : getXdemoItem.xDemoCss
+			}
+
+			if(xDemoObjectId) { //存在就更新
+				// 第一个参数是 className，第二个参数是 objectId
+				var updateItem = AV.Object.createWithoutData('XdemoList', xDemoObjectId);
+				// 修改属性
+				//todo.set('content', '每周工程师会议，本周改为周三下午3点半。');
+				// 保存到云端
+				updateItem.set({
+						name : getXdemoItem.xDemoName,
+						ename : getXdemoItem.xDemoEname,
+						author : getXdemoItem.xDemoAuthor,
+						des : getXdemoItem.xDemoDes,
+						group : getXdemoItem.xDemoGroup,
+						url : getXdemoItem.xDemoManifestFile,
+						data : JSON.stringify(postData)
+				});
+				updateItem.save().then(function() {
+						alert('提交成功');
+				}).catch(function(err) {
+						alert('提交失败:' + err);
+				});
+			} else { //不存在就新增
+				if(getXdemoItem.xDemoManifestFile == '') {
 					getXdemoItem.xDemoManifestFile = 'http://xdemo.reeqi.me/upload/'+ getXdemoItem.xDemoEname +'.js';
-
-					$.ajax({
-						type: 'POST',
-						url: 'http://xdemo.reeqi.me/index.php/welcome/upload_unoption' ,
-						data : {
-							name : getXdemoItem.xDemoName,
-							ename : getXdemoItem.xDemoEname,
-							data : JSON.stringify(postData),
-							author : getXdemoItem.xDemoAuthor,
-							des : getXdemoItem.xDemoDes,
-                            group : getXdemoItem.xDemoGroup,
-							url : getXdemoItem.xDemoManifestFile
-						},
-						success: function(data){
-
-							localStorage.setItem(demoIndex, JSON.stringify(getXdemoItem));
-							//localStorage.setItem('author',inputUploadXdemoAuthor);
-							if(data == 'done'){
-								alert('提交成功');
-							}else if(data == 'writeError'){
-								alert('文件写入失败，请联系开发者，谢谢！');
-							}
-						}
-					});
-				}else if(UrlRegEx(getXdemoItem.xDemoManifestFile)[2] !== 'xdemo.reeqi.me'){
-					$.ajax({
-						type: 'POST',
-						url: 'http://xdemo.reeqi.me/index.php/welcome/upload_unoption' ,
-						data : {
-							name : getXdemoItem.xDemoName,
-							ename :getXdemoItem.xDemoEname,
-							author : getXdemoItem.xDemoAuthor,
-							des : getXdemoItem.xDemoDes,
-							group : getXdemoItem.xDemoGroup,
-							url :	getXdemoItem.xDemoManifestFile
-						},
-						success: function(data){
-
-							//localStorage.setItem(demoIndex,JSON.stringify(getXdemoItem));
-							//localStorage.setItem('author',inputUploadXdemoAuthor);
-							if(data == 'done'){
-								alert('提交成功');
-							}
-						}
-					});
-				}else{
-					$.ajax({
-						type: 'POST',
-						url: 'http://xdemo.reeqi.me/index.php/welcome/upload_unoption' ,
-						data : {
-							name : getXdemoItem.xDemoName,
-							ename :getXdemoItem.xDemoEname,
-							author : getXdemoItem.xDemoAuthor,
-							des : getXdemoItem.xDemoDes,
-							group : getXdemoItem.xDemoGroup,
-							data : JSON.stringify(postData),
-							url : getXdemoItem.xDemoManifestFile
-						},
-						success: function(data){
-
-							//localStorage.setItem(demoIndex,JSON.stringify(getXdemoItem));
-							//localStorage.setItem('author',inputUploadXdemoAuthor);
-							if(data == 'done'){
-								alert('提交成功');
-							}else if(data == 'writeError'){
-								alert('文件写入失败，请联系开发者，谢谢！');
-							}
-						}
-					});
 				}
-			}			
+
+				var XdemoList = AV.Object.extend('XdemoList');
+				var xdemoList = new XdemoList();
+				xdemoList.save({
+						name : getXdemoItem.xDemoName,
+						ename : getXdemoItem.xDemoEname,
+						author : getXdemoItem.xDemoAuthor,
+						des : getXdemoItem.xDemoDes,
+						group : getXdemoItem.xDemoGroup,
+						url : getXdemoItem.xDemoManifestFile,
+						data : JSON.stringify(postData)
+				}).then(function(data) {
+					getXdemoItem.xDemoObjectId = data.id;
+					//存xDemoObjectId哈
+						localStorage.setItem(demoIndex, JSON.stringify(getXdemoItem));
+						//localStorage.setItem('author',inputUploadXdemoAuthor);
+						alert('提交成功');
+				}).catch(function(err) {
+						alert('文件写入失败，请联系开发者，谢谢！error:' + err);
+				});
+			}
+			
 		}
 
 		if(!localStorage.getItem("local_author")){
 			
 			var local_author = prompt("这是您第一次提交DEMO，请输入您的用户名","");
 			localStorage.setItem('local_author',local_author);
-			checkAuthor(xDemoIndex,local_author);
+			checkAuthor(xDemoIndex, local_author);
 		}else{
 			var local_author = localStorage.getItem("local_author");
 			checkAuthor(xDemoIndex,local_author);
@@ -439,27 +427,44 @@ var xdemoOption = {
 
 	},
 
-
-
 	updateXdemoEvent : function(xDemoIndex){
 
-				
 		var xDemoIndex = xDemoIndex;
 		var xDemoOldData = JSON.parse(localStorage.getItem(xDemoIndex));
 		var updateOptionUrl = xDemoOldData.xDemoManifestFile;
-		var xDemoOldStatus = xDemoOldData.xDemoStatus;
-		if(updateOptionUrl == ''){
+		
+		if(updateOptionUrl == ''){ // 配置文件为空
 			alert('本DEMO是手动添加的，无远程配置文件，无法更新');
 			return ;
+		} else if(UrlRegEx(updateOptionUrl)[2] !== 'xdemo.reeqi.me') { // 配置文件存在别处
+			$.ajax({
+				type: 'GET',
+				url: updateOptionUrl + "?t=" + Date.parse(new Date()) ,
+				dataType: 'json',
+				success: function(data){
+					xdemoOption.updateXdemoData(data, xDemoOldData, xDemoIndex);
+				}
+			});
+		} else { // 配置文件是自己的
+				if(objectId == "") { console.log("没有拿到ID更新不了"); }
+				var objectId = xDemoOldData.xDemoObjectId;
+				var query = new AV.Query('XdemoList');
+						query.get(objectId).then(function(obj){
+							var data = obj.get("data");
+									data = JSON.parse(data);
+									data.xDemoObjectId = objectId;
+							xdemoOption.updateXdemoData(data, xDemoOldData, xDemoIndex);
+						});
 		}
-		$.ajax({
-			type: 'GET',
-			url: updateOptionUrl + "?t=" + Date.parse(new Date()) ,
-			dataType: 'json',
-			success: function(data){
+	},
 
+	// updateXdemoEvent里更新数据
+	updateXdemoData: function(data, xDemoOldData, xDemoIndex){
+				var xDemoOldStatus = xDemoOldData.xDemoStatus;
+				var updateOptionUrl = xDemoOldData.xDemoManifestFile;
 				var xDemo = data;
 				var xDemoNewData = {
+					xDemoObjectId : xDemo.xDemoObjectId,
 					xDemoName : xDemo.name,
 					xDemoManifestFile : updateOptionUrl,
 					xDemoMatches : xDemo.matches,
@@ -521,15 +526,11 @@ var xdemoOption = {
 
 					var template = $('#myDemoTableTemplate').html();
 					var xDemoItemHtml = Mustache.to_html(template, xDemoListArr);
-					console.log(xDemoItemHtml);						
+					console.log(xDemoItemHtml);
 					$('tr[data-xdemo-index="'+ xDemoIndex  +'"]').html(xDemoItemHtml);
 					localStorage.setItem(xDemoIndex,JSON.stringify(xDemoNewData));
 					alert('更新完毕');
-				}							
-			}
-		});
-
-
+				}
 	},
 
 	editLayerCnt : function(xDemoIndex){
@@ -676,179 +677,230 @@ var xdemoOption = {
 		});
 	},
 	getPlatformItem : function(){
-		$('#xDemoPlatformList').click(function(e){
+		$('#xDemoPlatformList .btn').click(function(e){
 			e.preventDefault();
-			if($(e.target).data('url')){
+			// 如果找不到就直接返回了
+			if(!$(e.target).data('url')){ alert("没有找到配置文件"); return;}
+
 				var optionFileUrl = $(e.target).data('url');
-				//var optionFileUrl = "http://127.0.0.1/xdemo/option.js";
-				$.ajax({
-					type: 'GET',
-					url: optionFileUrl ,
-					dataType: 'json',
-					success: function(data){
-						var xDemo = data;
+				if(UrlRegEx(optionFileUrl)[2] !== 'xdemo.reeqi.me') {
+					$.ajax({
+						type: 'GET',
+						url: optionFileUrl ,
+						dataType: 'json',
+						success: function(data){
+							var xDemo = data;
+							var xDemoLength = localStorage.getItem("xDemoLength") || 1;
+							if(xDemo.group == undefined){
+								xDemo.group = 'other';
+							}
 
+							var xDemoData = {
+								xDemoName : xDemo.name,
+								xDemoManifestFile : optionFileUrl,
+								xDemoMatches : xDemo.matches,
+								xDemoVersion : xDemo.version,
+								xDemoAuthor : xDemo.author,
+								xDemoCss : xDemo.css,
+								xDemoGroup : xDemo.group ,
+								xDemoJs : xDemo.js,
+								xDemoEname : xDemo.ename,
+								xDemoDes : xDemo.descrition,
+								xDemoStatus : 'on'
+							}
 
-						var xDemoLength = localStorage.getItem("xDemoLength") || 1;
-						if(xDemo.group == undefined){
-							xDemo.group = 'o2Team';
+							var has = 0;
+							//防止重复载入，同时检查版本更新
+							for(var k = 1; k <= parseInt(xDemoLength); k++){
+								if(localStorage.getItem("xDemo_"+k) !== null){
+									var getXdemoItem = JSON.parse(localStorage.getItem("xDemo_"+k));
+									if(optionFileUrl == getXdemoItem.xDemoManifestFile){
+										if(getXdemoItem.xDemoVersion == xDemo.version){
+											alert('这个DEMO无版本更新');
+											has++;
+											break;							
+										}else{
+											alert('这个DEMO已更新');
+											localStorage.setItem("xDemo_" + k,JSON.stringify(xDemoData));
+											has++;
+											break;						
+										}
+										
+									}						
+								}else{
+									continue;
+								}
+							};
+							if(has !== 1){
+								if(localStorage.getItem("xDemoLength") == null){
+									localStorage.setItem("xDemoLength",1);
+								}else{
+									xDemoLength = parseInt(xDemoLength) + 1;
+									localStorage.setItem("xDemoLength",xDemoLength);
+								}
+								
+								localStorage.setItem("xDemo_" + xDemoLength,JSON.stringify(xDemoData));
+								alert('已将此DEMO导入到我的DEMO中');
+								window.location.reload();
+							}						
 						}
+					});						
+				} else {
+						var objectId = $(e.target).data('objectid');
+						var query = new AV.Query('XdemoList');
+								query.get(objectId).then(function(obj){
 
-						var xDemoData = {
-							xDemoName : xDemo.name,
-							xDemoManifestFile : optionFileUrl,
-							xDemoMatches : xDemo.matches,
-							xDemoVersion : xDemo.version,
-							xDemoAuthor : xDemo.author,
-							xDemoCss : xDemo.css,
-							xDemoGroup : xDemo.group ,
-							xDemoJs : xDemo.js,
-							xDemoEname : xDemo.ename,
-							xDemoDes : xDemo.descrition,
-							xDemoStatus : 'on'
-						}
+							var data = obj.get("data");
+							var xDemo = JSON.parse(data);
+							var xDemoLength = localStorage.getItem("xDemoLength") || 1;
+							if(xDemo.group == undefined){
+								xDemo.group = 'other';
+							}
 
-						var has = 0;
-						//防止重复载入，同时检查版本更新
-						for(var k = 1; k <= parseInt(xDemoLength); k++){
-							if(localStorage.getItem("xDemo_"+k) !== null){
-								var getXdemoItem = JSON.parse(localStorage.getItem("xDemo_"+k));
-								if(optionFileUrl == getXdemoItem.xDemoManifestFile){
-									if(getXdemoItem.xDemoVersion == xDemo.version){
-										alert('这个DEMO无版本更新');
-										has++;
-										break;							
-									}else{
-										alert('这个DEMO已更新');
-										localStorage.setItem("xDemo_" + k,JSON.stringify(xDemoData));
-										has++;
-										break;						
-									}
+							var xDemoData = {
+								xDemoObjectId : objectId,
+								xDemoName : xDemo.name,
+								xDemoManifestFile : optionFileUrl,
+								xDemoMatches : xDemo.matches,
+								xDemoVersion : xDemo.version,
+								xDemoAuthor : xDemo.author,
+								xDemoCss : xDemo.css,
+								xDemoGroup : xDemo.group ,
+								xDemoJs : xDemo.js,
+								xDemoEname : xDemo.ename,
+								xDemoDes : xDemo.descrition,
+								xDemoStatus : 'on'
+							}
+
+							var has = 0;
+							//防止重复载入，同时检查版本更新
+							for(var k = 1; k <= parseInt(xDemoLength); k++){
+								if(localStorage.getItem("xDemo_"+k) !== null){
+									var getXdemoItem = JSON.parse(localStorage.getItem("xDemo_"+k));
+									if(objectId == getXdemoItem.xDemoObjectId){
+										if(getXdemoItem.xDemoVersion == xDemo.version){
+											alert('这个DEMO无版本更新');
+											has++;
+											break;
+										}else{
+											localStorage.setItem("xDemo_" + k,JSON.stringify(xDemoData));
+											has++;
+											alert('这个DEMO已更新');
+											break;
+										}
+										
+									}						
+								}else{
+									continue;
+								}
+							};
+							if(has !== 1){
+								if(localStorage.getItem("xDemoLength") == null){
+									localStorage.setItem("xDemoLength",1);
+								}else{
+									xDemoLength = parseInt(xDemoLength) + 1;
+									localStorage.setItem("xDemoLength",xDemoLength);
+								}
+								
+								localStorage.setItem("xDemo_" + xDemoLength,JSON.stringify(xDemoData));
+								alert('已将此DEMO导入到我的DEMO中');
+								window.location.reload();
+							}
+
+									console.log(obj);
+
 									
-								}						
-							}else{
-								continue;
-							}
-						};
-						if(has !== 1){
-							if(localStorage.getItem("xDemoLength") == null){
-								localStorage.setItem("xDemoLength",1);
-							}else{
-								xDemoLength = parseInt(xDemoLength) + 1;
-								localStorage.setItem("xDemoLength",xDemoLength);
-							}
-							
-							localStorage.setItem("xDemo_" + xDemoLength,JSON.stringify(xDemoData));
-							alert('已将此DEMO导入到我的DEMO中');
-							window.location.reload();
-						}						
-					}
-				});						
-			}
+
+								},function(error){
+									alert("获取demo失败");
+									console.log(error);
+								});
+				}
+
 		})
 	},
+    
+    // 从数据库获取demo列表
 	getPlatformList : function(){
-		var xDemoPlatformListHtmlTemple = '';
-		$.ajax({
-			type: 'GET',
-			//url: 'http://xdemo.reeqi.me/index.php/welcome/getlist_json' ,
-			url: 'http://gengshu.net/getList.json' ,
-			dataType: 'json',
-			success: function(data){
-				$("#xDemoPlatformList").html('');
-				var pListData = data;
 
-				var xDemoListArr = {
-					items : []
-				};
+        var query = new AV.Query('XdemoList');
+        query.select(['objectId','group','name','author','url','des']);
+        query.find().then(function(data){
 
-				for(var i in pListData){
-					console.log(pListData[i].name);
-					xDemoListArr.items.push({
-						xDemoName : pListData[i].name,
-						xDemoDes : pListData[i].des,
-						xDemoAuthor : pListData[i].author,
-						xDemoGroup : pListData[i].group || 'o2Team',
-						xDemoUrl : pListData[i].url
-					})
-				}
-				var template = $('#demoPlatformTemplate').html();
-					var xDemoItemHtml = html_decode(Mustache.to_html(template, xDemoListArr));
-					console.log(xDemoItemHtml);
-				$('#xDemoPlatformList').append(xDemoItemHtml);
-				xdemoOption.getCommonGroup('platformList');
-				xdemoOption.getPlatformItem();
-			}
-		});
-	},
+            $("#xDemoPlatformList").html('');
+            var pListData = data;
+            var xDemoListArr = {
+                items : []
+            };
+
+            for(var i in pListData){
+								console.log("data");
+								console.log(data[i].id);
+                xDemoListArr.items.push({
+										xDemoObjectId : data[i].id,
+                    xDemoName : data[i].get("group"),
+                    xDemoDes : data[i].get("des"),
+                    xDemoAuthor : data[i].get("author"),
+                    xDemoGroup : data[i].get("group") || 'o2Team',
+                    xDemoUrl : data[i].get("url")
+                });
+            }
 
 
-	// 获取业务列表
-	getGroupList : function(){
-        var query = new AV.Query('GroupList');
-            query.select(['groupName']);
-            query.find().then(function(data){
-				var template = $('#groupItemTemplate').html();
-				var groupListArr = {
-					items : []
-				};
+            var template = $('#demoPlatformTemplate').html();
 
-                for(var i in data){
-                    groupListArr.items.push({groupItem : data[i].get("groupName")});
-                }
+            var xDemoItemHtml = html_decode(Mustache.to_html(template, xDemoListArr));
+            $('#xDemoPlatformList').append(xDemoItemHtml);
 
-				console.log(groupListArr);
+            xdemoOption.getCommonGroup('platformList');
+            xdemoOption.getPlatformItem();
 
-				var xDemoItemHtml = Mustache.to_html(template, groupListArr);
-
-				$('#createDemoGroup,#myDemoGroup,#demoListGroup,#autoLoadDemoGroup').append(xDemoItemHtml);
-				if(localStorage.getItem("commonGroup") !== null){
-					var commonGroup = localStorage.getItem("commonGroup");
-					$('#createDemoGroup option,#myDemoGroup option,#demoListGroup option').each(function(index, el) {
-						_this = el;
-						if($(_this).html() == commonGroup){
-							$(_this).attr('selected','selected');
-						}
-					});
-				}
-				xdemoOption.demoListFilter();
-				xdemoOption.myDemoFilter();
-				xdemoOption.setCommonGroup();
+        },function(error){
+            console.log("leadcloud error in List:" + error);
         });
-		/*$.ajax({
-			type: 'GET',
-			//url: 'http://xdemo.reeqi.me/index.php/welcome/getGroupList_json' ,
-			url: 'http://gengshu.net/getGroupList.json' ,
-			dataType: 'json',
-			success: function(data){
-				var groupListArr = {
-					items : []
-				};
-				var template = $('#groupItemTemplate').html();
-				for(var i in data){
-					groupListArr.items.push({groupItem : data[i].groupName});
-				}
-				console.log(groupListArr);
-				var xDemoItemHtml = Mustache.to_html(template, groupListArr);
 
-				$('#createDemoGroup,#myDemoGroup,#demoListGroup,#autoLoadDemoGroup').append(xDemoItemHtml);
-				if(localStorage.getItem("commonGroup") !== null){
-					var commonGroup = localStorage.getItem("commonGroup");
-					$('#createDemoGroup option,#myDemoGroup option,#demoListGroup option').each(function(index, el) {
-						_this = el;
-						if($(_this).html() == commonGroup){
-							$(_this).attr('selected','selected');
-						}
-					});
-				}
-				xdemoOption.demoListFilter();
-				xdemoOption.myDemoFilter();
-				xdemoOption.setCommonGroup();
-			}
-		});*/
+    },
+
+
+    // 获取业务列表
+    getGroupList : function(){
+
+        var query = new AV.Query('GroupList');
+        query.select(['groupName']);
+        query.find().then(function(data){
+
+            var template = $('#groupItemTemplate').html(); //获取模板
+            var groupListArr = {
+                items : []
+            };
+
+            for(var i in data){
+                groupListArr.items.push({groupItem : data[i].get("groupName")});
+            }
+
+            var xDemoItemHtml = Mustache.to_html(template, groupListArr); //填充模板
+            // 填充业务选项
+            $('#createDemoGroup,#myDemoGroup,#demoListGroup,#autoLoadDemoGroup').append(xDemoItemHtml);
+            // 获取默认业务
+            if(localStorage.getItem("commonGroup") !== null){
+                var commonGroup = localStorage.getItem("commonGroup");
+                $('#createDemoGroup option,#myDemoGroup option,#demoListGroup option').each(function(index, el) {
+                    _this = el;
+                    if($(_this).html() == commonGroup){
+                        $(_this).attr('selected','selected');
+                    }
+                });
+            }
+            xdemoOption.demoListFilter(); //业务列表过滤
+            xdemoOption.myDemoFilter(); //我的业务列表过滤
+            xdemoOption.setCommonGroup(); //设置常用业务
+
+        },function(error){
+            console.log("leadcloud error in GroupList:" + error);
+        });
 	},
 
-	// DEMO列表业务过滤
+	// DEMO列表我的业务过滤
 	myDemoFilter : function(){
 		$('#myDemoGroup').change(function(){
 			var selectItem = $(this).val();

@@ -1,12 +1,12 @@
 /**
  * URL解析
  */
-function UrlRegEx(urlt)   {      
-    //如果加上/g参数，那么只返回$0匹配。也就是说arr.length = 0   
-    var re = /(\w+):\/\/([^\:|\/]+)(\:\d*)?(.*\/)([^#|\?|\n]+)?(#.*)?(\?.*)?/gi;   
+function UrlRegEx(urlt)   {
+    //如果加上/g参数，那么只返回$0匹配。也就是说arr.length = 0
+    var re = /(\w+):\/\/([^\:|\/]+)(\:\d*)?(.*\/)?([^#|\?|\n]+)?(#.*)?(\?.*)?/gi;
    	var arr = re.exec(urlt);   
     //var arr = urlt.match(re);   
-    return arr;   
+    return arr; 
    
 }
 
@@ -46,7 +46,7 @@ function domainMatch(domain,_domain){
 var popup = {
 	getDemos : function(){
 		console.log('popupJs:popup:getDemos');
-		chrome.tabs.query({active:true},function(tab){
+		chrome.tabs.query({currentWindow:true,active:true},function(tab){
 
 			console.log('popupJs:popup:getDemos:tab[0]:'+tab[0].url);
 			var domain = UrlRegEx(tab[0].url)[2];
@@ -65,11 +65,14 @@ var popup = {
 									xDemoStatus = getXdemoItem.xDemoStatus;
 
 							var domain = UrlRegEx(tab[0].url)[2];
+
 							
 							for(var j = 0; j < xDemoMatches.length; j++){
-								var _domain = UrlRegEx(xDemoMatches[j])[2];
-								console.log(xDemoMatches[j]);
 
+								var urlRegExResult = UrlRegEx(xDemoMatches[j]);
+								var _domain = urlRegExResult && urlRegExResult[2];
+								if(!_domain) {break;};
+								console.log("domain:"+_domain);
 								if(domainMatch(domain,_domain)){
 										$('#demoList').append('<li>'+ xDemoName +' <div  class="make-switch switch-small" data-index="xDemo_'+i+'"><input type="checkbox"></div></li>');
 										$('div[data-index="xDemo_' + i + '"]').bootstrapSwitch();
@@ -77,7 +80,7 @@ var popup = {
 									if(xDemoStatus == "on"){
 										$('div[data-index="xDemo_' + i + '"]').bootstrapSwitch('setState', true);
 									}else{
-										$('div[data-index="xDemo_' + i + '"]').bootstrapSwitch('setState', false);					
+										$('div[data-index="xDemo_' + i + '"]').bootstrapSwitch('setState', false);
 									}
 									
 									break;
@@ -109,7 +112,12 @@ var popup = {
             }else{
                 getXdemoItem.xDemoStatus = 'on';
             }
-            localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
+						localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
+
+						// 修改一次选项reload一次
+						chrome.tabs.query({currentWindow:true,active:true},function(tab){
+							chrome.tabs.reload(tab.id);
+						});
         });	
 
 

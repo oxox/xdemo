@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
   "name": "XDEMO",
-  "version": "2.0",
+  "version": "3.0.1",
   "description": "向指定的页面注入远程脚本及样式，以达到改变页面元素，增强用户体验", 
   "browser_action": { 
     "default_icon": "img/128.png" ,
     "default_title": "XDEMO 2.0",
-    "default_popup": "popup.html"    
+    "default_popup": "popup.html"
   },
   "icons": { 
-    "16": "img/16.png",             
-    "48": "img/48.png",            
+    "16": "img/16.png",
+    "48": "img/48.png",
     "128": "img/128.png" 
   },    
   "options_page": "option.html",
@@ -23,12 +23,12 @@
       "js" : ["js/jquery.min.js","js/content.js"]
     },
     {
-      "matches": ["http://xdemo.reeqi.me/index.php/welcome/*"],
+      "matches": ["http://xdemo.reeqi.me/index.php/welcome1/*"],
       "js": ["js/getid.js"],
       "run_at":"document_end"
     }
   ],  
   "content_security_policy": "script-src 'self' https://raw.github.com; object-src 'self'",
 	"permissions": ["tabs","http://*/","https://*/"],
-  "update_url": "http://xdemo.reeqi.me/index.php/welcome/update?update"
+  "update_url": "http://clients2.google.com/service/update2/crx"
 }
