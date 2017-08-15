@@ -202,7 +202,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 							}
 							var jsRequest = includeScriprtFunction + jsLink;
 
-							//注入当前页面，并执行        
+							//注入当前页面，并执行
 							var code = cssRequest + ';' + jsRequest;
 							chrome.tabs.executeScript(null, {
 								code: code
@@ -232,6 +232,50 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
 });
 
+function xOneDemo(index, tabId){
+	if (localStorage.getItem(index) !== null) {
+		var getXdemoItem = JSON.parse(localStorage.getItem(index));
+		console.log(getXdemoItem);
+		var xDemoJs = getXdemoItem.xDemoJs,
+			xDemoCss = getXdemoItem.xDemoCss,
+			xDemoName = getXdemoItem.xDemoName,
+			xDemoMatches = getXdemoItem.xDemoMatches,
+			xDemoStatus = getXdemoItem.xDemoStatus;
+
+				//嵌入样式的函数 如果带https? .replace(/^http[s]?:/,"")
+				var includeLinkFunction = 'function includeLinkStyle(url) {var link = document.createElement("link");link.rel = "stylesheet";link.type = "text/css";link.href = url; document.getElementsByTagName("head")[0].appendChild(link);};';
+				var cssLink = '';
+				for (var j in xDemoCss) {
+					cssLink += 'includeLinkStyle("' + xDemoCss[j] + '?t=' + Date.parse(new Date()) + '");';
+				}
+				var cssRequest = includeLinkFunction + cssLink;
+
+				//嵌入脚本的函数script.async = "async";script.defer = "defer";
+				var includeScriprtFunction = 'function includeScriprt(url){var script = document.createElement("script");script.type="text/javascript";script.charset="UTF-8";script.src = url;document.getElementsByTagName("body")[0].appendChild(script);};'
+
+				var jsLink = '';
+				for (var k in xDemoJs) {
+					jsLink += 'includeScriprt("' + xDemoJs[k] + '?t=' + Date.parse(new Date()) + '");';
+				}
+				var jsRequest = includeScriprtFunction + jsLink;
+
+				//注入当前页面，并执行
+				var code = cssRequest + ';' + jsRequest;
+				chrome.tabs.executeScript(null, {
+					code: code
+				});
+				
+				// 更新角标
+				chrome.browserAction.getBadgeText({tabId:tabId}, function(result){
+					var num = parseInt(result);
+					num = num ? num + 1 : 1;
+					chrome.browserAction.setBadgeText({
+						text: num.toString()
+					});
+
+				});
+	}
+}
 
 
 // chrome.browserAction.onClicked.addListener(function() {

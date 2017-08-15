@@ -1,53 +1,21 @@
-/**
- * URL解析
- */
-function UrlRegEx(urlt)   {
-    //如果加上/g参数，那么只返回$0匹配。也就是说arr.length = 0
-    var re = /(\w+):\/\/([^\:|\/]+)(\:\d*)?(.*\/)?([^#|\?|\n]+)?(#.*)?(\?.*)?/gi;
-   	var arr = re.exec(urlt);   
-    //var arr = urlt.match(re);   
-    return arr; 
-   
-}
 
-/**
- * 域名匹配
- */
-function domainMatch(domain,_domain){
-	var arr = domain.split('.');
-	var _arr = _domain.split('.');
-	var flag = 0;
-	if(arr.length == _arr.length){
-		for(var i = arr.length-1; i>=0 ; i-- ){
-			if(arr[i] == _arr[i]){
-				flag = 1;
-				continue;
-			}else if(_arr[i] == "*"){
-				flag = 1;
-				continue;
-			}else{
-				return false;
-				break;
-			}
-		}		
-	}else if(arr.length ==2 && arr[0] == _arr[1]){
-		flag = 1;
-	}
-	else{
-		return false;
-	}
-	if(flag == 1){
-		return true;
-	}
-
-}
-
+// 把背景页面传过来
+var bg = chrome.extension.getBackgroundPage();
+// 解析URL的函数
+var UrlRegEx = bg.UrlRegEx;
+// 解析域名的函数
+var domainMatch = bg.domainMatch;
+// 打开时候直接插入
+var xOneDemo = bg.xOneDemo;
+console.log(bg);
 
 var popup = {
+	tabId: 0,
 	getDemos : function(){
 		console.log('popupJs:popup:getDemos');
 		chrome.tabs.query({currentWindow:true,active:true},function(tab){
 
+			popup.tabId = tab[0].id;
 			console.log('popupJs:popup:getDemos:tab[0]:'+tab[0].url);
 			var domain = UrlRegEx(tab[0].url)[2];
 			console.log("popupJs:popup:domain:"+domain);
@@ -108,17 +76,24 @@ var popup = {
             var xDemoIndex = el.attr('data-index');
             var getXdemoItem = JSON.parse(localStorage.getItem(xDemoIndex));
             if(getXdemoItem.xDemoStatus == 'on'){
-                getXdemoItem.xDemoStatus = 'off';
+								getXdemoItem.xDemoStatus = 'off';
+								// 保存更改
+								localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
+								// 关闭的时候reload一次
+								chrome.tabs.query({currentWindow:true,active:true},function(tab){
+									chrome.tabs.reload(tab.id);
+								});
             }else{
-                getXdemoItem.xDemoStatus = 'on';
-            }
-						localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
+								getXdemoItem.xDemoStatus = 'on';
+								// 打开的时候不需要reload直接插入
+								console.log(popup.tabId);
+								xOneDemo(xDemoIndex, popup.tabId);
+								// 保存更改
+								localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
 
-						// 修改一次选项reload一次
-						chrome.tabs.query({currentWindow:true,active:true},function(tab){
-							chrome.tabs.reload(tab.id);
-						});
-        });	
+            }
+						// localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
+        });
 
 
 	},

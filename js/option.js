@@ -838,7 +838,7 @@ var xdemoOption = {
 								console.log(data[i].id);
                 xDemoListArr.items.push({
 										xDemoObjectId : data[i].id,
-                    xDemoName : data[i].get("group"),
+                    xDemoName : data[i].get("name"),
                     xDemoDes : data[i].get("des"),
                     xDemoAuthor : data[i].get("author"),
                     xDemoGroup : data[i].get("group") || 'o2Team',
@@ -991,13 +991,13 @@ var xdemoOption = {
 /**
  * URL解析
  */
-function UrlRegEx(urlt)   {        
+
+ function UrlRegEx(urlt)   {        
     var re = /(\w+):\/\/([^\:|\/]+)(\:\d*)?(.*\/)([^#|\?|\n]+)?(#.*)?(\?.*)?/gi;   
    	var arr = re.exec(urlt);    
     return arr;   
    
 }
-
 
 /**
  * html反编译
