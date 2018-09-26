@@ -1,60 +1,28 @@
-/**
- * URL解析
- */
-function UrlRegEx(urlt)   {      
-    //如果加上/g参数，那么只返回$0匹配。也就是说arr.length = 0   
-    var re = /(\w+):\/\/([^\:|\/]+)(\:\d*)?(.*\/)([^#|\?|\n]+)?(#.*)?(\?.*)?/gi;   
-   	var arr = re.exec(urlt);   
-    //var arr = urlt.match(re);   
-    return arr;   
-   
-}
 
-/**
- * 域名匹配
- */
-function domainMatch(domain,_domain){
-	var arr = domain.split('.');
-	var _arr = _domain.split('.');
-	var flag = 0;
-	if(arr.length == _arr.length){
-		for(var i = arr.length-1; i>=0 ; i-- ){
-			if(arr[i] == _arr[i]){
-				flag = 1;
-				continue;
-			}else if(_arr[i] == "*"){
-				flag = 1;
-				continue;
-			}else{
-				return false;
-				break;
-			}
-		}		
-	}else if(arr.length ==2 && arr[0] == _arr[1]){
-		flag = 1;
-	}
-	else{
-		return false;
-	}
-	if(flag == 1){
-		return true;
-	}
-
-}
-
+// 把背景页面传过来
+var bg = chrome.extension.getBackgroundPage();
+// 解析URL的函数
+var UrlRegEx = bg.UrlRegEx;
+// 解析域名的函数
+var domainMatch = bg.domainMatch;
+// 打开时候直接插入
+var xOneDemo = bg.xOneDemo;
+console.log(bg);
 
 var popup = {
+	tabId: 0,
 	getDemos : function(){
-		console.log('eee');
-		chrome.tabs.query({active:true},function(tab){
+		console.log('popupJs:popup:getDemos');
+		chrome.tabs.query({currentWindow:true,active:true},function(tab){
 
-			console.log(tab[0].url);
+			popup.tabId = tab[0].id;
+			console.log('popupJs:popup:getDemos:tab[0]:'+tab[0].url);
 			var domain = UrlRegEx(tab[0].url)[2];
-			console.log(domain);
+			console.log("popupJs:popup:domain:"+domain);
 			if(localStorage.getItem("xDemoLength") !==null){
-				console.log('tttttt');
+				console.log('has xDemo in localStorage');
 				var xDemoLength = parseInt(localStorage.getItem("xDemoLength"));
-				console.log(xDemoLength);
+				console.log('xDemo Num:' + xDemoLength);
 				var demoListHtml = '';
 				for(var i = 1; i <=  xDemoLength; i++){
 
@@ -65,11 +33,14 @@ var popup = {
 									xDemoStatus = getXdemoItem.xDemoStatus;
 
 							var domain = UrlRegEx(tab[0].url)[2];
+
 							
 							for(var j = 0; j < xDemoMatches.length; j++){
-								var _domain = UrlRegEx(xDemoMatches[j])[2];
-								console.log(xDemoMatches[j]);
 
+								var urlRegExResult = UrlRegEx(xDemoMatches[j]);
+								var _domain = urlRegExResult && urlRegExResult[2];
+								if(!_domain) {break;};
+								console.log("domain:"+_domain);
 								if(domainMatch(domain,_domain)){
 										$('#demoList').append('<li>'+ xDemoName +' <div  class="make-switch switch-small" data-index="xDemo_'+i+'"><input type="checkbox"></div></li>');
 										$('div[data-index="xDemo_' + i + '"]').bootstrapSwitch();
@@ -77,7 +48,7 @@ var popup = {
 									if(xDemoStatus == "on"){
 										$('div[data-index="xDemo_' + i + '"]').bootstrapSwitch('setState', true);
 									}else{
-										$('div[data-index="xDemo_' + i + '"]').bootstrapSwitch('setState', false);					
+										$('div[data-index="xDemo_' + i + '"]').bootstrapSwitch('setState', false);
 									}
 									
 									break;
@@ -92,24 +63,37 @@ var popup = {
 			if($('#demoList').html() == ''){
 				console.log('none');
 				$('#demoList').append('<li class="empty">当前页面没有可用的DEMO<br/>可进入插件设置界面添加</li>')
-			}					
+			}
 		})
 	},
 	setStatus : function(){
-		console.log('uuuu');
-			$('#demoList .make-switch').on('switch-change', function (e, data) {
-				console.log('ttttt');
-				var el = $(data.el).parent().parent();
-				console.log(el);
-				var xDemoIndex = el.attr('data-index');
-				var getXdemoItem = JSON.parse(localStorage.getItem(xDemoIndex));
-				if(getXdemoItem.xDemoStatus == 'on'){
-					getXdemoItem.xDemoStatus = 'off';
-				}else{
-					getXdemoItem.xDemoStatus = 'on';
-				}
-				localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));				
-			});	
+		console.log('popupJs:setStatus:');
+        $('#demoList .make-switch').on('switch-change', function (e, data) {
+            console.log('clickOn trigger switch-change');
+            var el = $(data.el).parent().parent();
+            console.log("change Item:");
+            console.log(el);
+            var xDemoIndex = el.attr('data-index');
+            var getXdemoItem = JSON.parse(localStorage.getItem(xDemoIndex));
+            if(getXdemoItem.xDemoStatus == 'on'){
+								getXdemoItem.xDemoStatus = 'off';
+								// 保存更改
+								localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
+								// 关闭的时候reload一次
+								chrome.tabs.query({currentWindow:true,active:true},function(tab){
+									chrome.tabs.reload(tab.id);
+								});
+            }else{
+								getXdemoItem.xDemoStatus = 'on';
+								// 打开的时候不需要reload直接插入
+								console.log(popup.tabId);
+								xOneDemo(xDemoIndex, popup.tabId);
+								// 保存更改
+								localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
+
+            }
+						// localStorage.setItem(xDemoIndex,JSON.stringify(getXdemoItem));
+        });
 
 
 	},
